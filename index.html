@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wealth distribution in the US</title>
+        <script src="http://d3js.org/d3.v3.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="country_locations.js"></script>
+        <script src="revenues.js"></script>
+        <script src="world_map.js"></script>
+
+        <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div id="container" style="position: absolute; width: 100%; height: 1000px;"></div>
+
+        <script>
+            console.log(countryData);
+            console.log(movieRevenue);
+
+            var map = new Datamap({
+                element: document.getElementById('container'),
+                fills: {
+                    defaultFill: 'rgba(0,0,0,0.4)'
+                },
+                geographyConfig: {
+                    highlightOnHover: true,
+                    popupOnHover: true
+                }
+            });
+
+            var data = ['country', 'revenue','latitude','longitude'];
+            var bubbleData = [];
+            var total_revenue = 1215439994;
+
+            for (var movie_name in movieRevenue){
+                if(movie_name = "Iron Man 3"){
+                    if (movieRevenue.hasOwnProperty(movie_name)) {
+                        var movie_data = movieRevenue[movie_name];
+                        for (var data in movie_data){
+                            var country = data;
+                            if(countryData.hasOwnProperty(country)){
+                                var revenue = movie_data[data];
+                                var latitude = countryData[country]["latitude"];
+                                var longitude = countryData[country]["longitude"];
+                                var obj = {"country":country, "revenue":revenue, "latitude":latitude, "longitude":longitude, radius: revenue * 100 * 3 / total_revenue};
+                                bubbleData.push(obj);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //draw bubbles for the data
+            map.bubbles(bubbleData, {
+                            popupTemplate: function (geo, data) {
+                                   return ['<div class="hoverinfo">' + '',
+                                   '<br/>Country: ' +  data.country + '',
+                                   '<br/>Revenue: ' +  '$' + data.revenue + '',
+                                   '<br/>% Revenue: ' + data.revenue * 100 / total_revenue  + '%',
+                                   '</div>'].join('');
+                            }
+                        });
+        </script>
+    </body>
+</html>
