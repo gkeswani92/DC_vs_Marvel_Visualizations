@@ -43,14 +43,14 @@
 //X scale buttons
 var xbuttonNames = ["Year Released", "Rotten Tomatoes Score", "Budget"]
 
-var xbuttons =["xRelease, xTomato, xBudget"]
+var xbuttons =["xRelease", "xTomato", "xBudget"]
 
 
 
 //Y scale buttons
 var ybuttonNames = ["Rotten Tomatoes Score", "Budget", "Sales"]
 
-var ybuttons =["yTomato, yBudget, ySales"]
+var ybuttons =["yTomato", "yBudget", "ySales"]
 
 
 //Initial x,y categories
@@ -69,7 +69,6 @@ var yselection = "ADJUSTED"
 
   var MovieJSON = [{"COMPANY":"DC","FILM":"Superman","RELEASE":"1978","ADJUSTED":"1097039000","Assignment":"Skylar","WORLDWIDE":"300218018","DOMESTIC":"134218018","FOREIGN":"166000000","Rotten_Tomatoes":"93","BUDGET":"55000000","STUDIO":"WB"},
 {"COMPANY":"DC","FILM":"Superman II","RELEASE":"1981","ADJUSTED":"312806365","Assignment":"Gaurav","WORLDWIDE":"108185706","DOMESTIC":"108185706","FOREIGN":"","Rotten_Tomatoes":"89","BUDGET":"54000000","STUDIO":"WB"},
-{"COMPANY":"DC","FILM":"Swamp Thing","RELEASE":"1982","ADJUSTED":"","Assignment":"Peimin","WORLDWIDE":"","DOMESTIC":"","FOREIGN":"","Rotten_Tomatoes":"64","BUDGET":"3000000","STUDIO":"Emb"},
 {"COMPANY":"DC","FILM":"Superman III","RELEASE":"1983","ADJUSTED":"143405983","Assignment":"Skylar","WORLDWIDE":"59950623","DOMESTIC":"59950623","FOREIGN":"","Rotten_Tomatoes":"26","BUDGET":"39000000","STUDIO":"WB"},
 {"COMPANY":"DC","FILM":"Supergirl","RELEASE":"1984","ADJUSTED":"32782737","Assignment":"Gaurav","WORLDWIDE":"14296438","DOMESTIC":"14296438","FOREIGN":"","Rotten_Tomatoes":"7","BUDGET":"35000000","STUDIO":"TriStar"},
 {"COMPANY":"Marvel","FILM":"Howard the Duck","RELEASE":"1986","ADJUSTED":"82524005","Assignment":"Peimin","WORLDWIDE":"37962774","DOMESTIC":"16295774","FOREIGN":"21667000","Rotten_Tomatoes":"14","BUDGET":"35000000","STUDIO":"Uni."},
@@ -138,6 +137,61 @@ var yselection = "ADJUSTED"
 {"COMPANY":"Marvel","FILM":"Fantastic Four","RELEASE":"2015","ADJUSTED":"167977596","Assignment":"Peimin","WORLDWIDE":"167977596","DOMESTIC":"56117548","FOREIGN":"111860048","Rotten_Tomatoes":"9","BUDGET":"120000000","STUDIO":"Fox"},
 {"COMPANY":"Marvel","FILM":"Deadpool","RELEASE":"2016","ADJUSTED":"758691328","Assignment":"Skylar","WORLDWIDE":"758691328","DOMESTIC":"360173154","FOREIGN":"398518174","Rotten_Tomatoes":"83","BUDGET":"58000000","STUDIO":"Fox"}];
 
+//Min and Max for x domain
+var Minx;
+var Maxx;
+
+//Min and Max for y domain
+var Miny;
+var Maxy;
+
+
+var minRelease = Number.MAX_SAFE_INTEGER;
+var maxRelease = 0;
+var minAdjusted = Number.MAX_SAFE_INTEGER;
+var maxAdjusted = 0;
+var minBudget = Number.MAX_SAFE_INTEGER;
+var maxBudget = 0;
+var minTomato = Number.MAX_SAFE_INTEGER;
+var maxTomato = 0;
+var SetMinMax = function(MovieJSON){
+    var R
+    var A
+    var B
+    var T
+    for(var i = 0; i< MovieJSON.length;i++){
+    R = Number(MovieJSON[i].RELEASE);
+    if (R < minRelease){
+        minRelease = R;
+    }
+    if (R > maxRelease) {
+        maxRelease = R;
+    }
+    A = Number(MovieJSON[i].ADJUSTED);
+    if (A < minAdjusted){
+        minAdjusted = A;
+    }
+    if (A > maxAdjusted) {
+        maxAdjusted = A;
+    }
+    B = Number(MovieJSON[i].BUDGET);
+    if (B < minBudget){
+        minBudget = B;
+    }
+    if (B > maxBudget) {
+        maxBudget = B;
+    }
+    T = Number(MovieJSON[i].Rotten_Tomatoes);
+    if (T < minTomato){
+        minTomato = T;
+    }
+    if (T > maxTomato) {
+        maxTomato = T;
+}}};
+
+SetMinMax(MovieJSON);
+
+
 
 
 
@@ -154,10 +208,23 @@ var LoadData = function(s1, s2) {
 
 
 var updatex = function(d){
-    console.log("xclicked")
-    if(this.id == "#xRelease"){xselection = "RELEASE"}
-    else if (this.id == "#xTomato"){xselection = "Rotten_Tomatoes"}
-    else {xselection= "BUDGET"}
+    console.log(d.id)
+    if(d.id == "xRelease"){
+        console.log("releasex");
+        xselection = "RELEASE";
+        Minx = minRelease;
+        Maxx = maxRelease;
+}
+    else if (d.id== "xTomato"){
+        console.log("Tomatox");
+        xselection = "Rotten_Tomatoes";
+        Minx = minTomato;
+        Maxx = maxTomato;}
+    else {
+        xselection= "BUDGET";
+        Minx = minBudget;
+        Maxx = maxBudget;}
+
     MoviePoints = LoadData(xselection,yselection);
     update(MoviePoints)
 
@@ -166,10 +233,20 @@ var updatex = function(d){
 
 
 var updatey = function(d){
-    console.log("yclicked")
-    if(this.id == "#yBudget"){yselection = "BUDGET"}
-    else if (this.id == "#yBudget"){yselection = "ADJUSTED"}
-    else {yselection= "Rotten_Tomatoes"}
+    
+    if(d.id == "yBudget"){
+        yselection = "BUDGET";
+        Miny = minBudget;
+        Maxy = maxBudget;
+    }
+    else if (d.id == "ySales"){
+        yselection = "ADJUSTED";
+        Miny = minAdjusted;
+        Maxy = maxAdjusted;}
+    else {
+        yselection= "Rotten_Tomatoes";
+        Miny = minTomato;
+        Maxy = maxTomato;}
     MoviePoints = LoadData(xselection,yselection);
     update(MoviePoints);
 }
@@ -177,15 +254,35 @@ var updatey = function(d){
 
 
 
+//Create x axis Buttons
+d3.select("#xScales").selectAll("input").data(xbuttonNames).enter().append("input").attr("type","button").attr("class","xbutton").attr("value", function (d){return d;} );
 
-d3.select("#xScales").selectAll("input").data(xbuttonNames).enter().append("input").attr("type","button").attr("class","xbutton").attr("value", function (d){return d;} ).attr("id", function(d,i){
-    return xbuttons[i];
-}).on("click", updatex);
+//Create unique id's
+d3.selectAll(".xbutton")[0].forEach(function(d,i){ d.setAttribute("id",xbuttons[i])});
+
+//update chart on click
+d3.select("#xRelease").on("click", function(d){updatex(this)});
+
+d3.select("#xTomato").on("click", function(d){updatex(this)});
+
+d3.select("#xBudget").on("click", function(d){updatex(this)});
 
 
-d3.select("#yScales").selectAll("input").data(ybuttonNames).enter().append("input").attr("type","button").attr("class","ybutton").attr("value", function (d){return d;} ).attr("id", function(d,i){
-    return ybuttons[i];
-}).on("click", updatey);
+
+
+d3.select("#yScales").selectAll("input").data(ybuttonNames).enter().append("input").attr("type","button").attr("class","ybutton").attr("value", function (d){return d;} );
+
+
+d3.selectAll(".ybutton")[0].forEach(function(d,i){ d.setAttribute("id",ybuttons[i])});
+
+d3.select("#yTomato").on("click", function(d){updatey(this)});
+
+d3.select("#yBudget").on("click", function(d){updatey(this)});
+
+d3.select("#ySales").on("click", function(d){updatey(this)});
+
+
+
 
 //Have an x scale and y scale been chosen?
 
@@ -213,9 +310,9 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
 
 
             // Setup settings for graphic
-            var canvas_width = 500;
-            var canvas_height = 300;
-            var padding = 30;  // for chart edges
+            var canvas_width = 800;
+            var canvas_height = 500;
+            var padding = 100;  // for chart edges
 
 
               // Create scale functions for RELEASE year
@@ -231,9 +328,7 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
                   //          .range([padding, canvas_width - padding * 2]); // output range
 
             var yScale = d3.scale.linear()  // yScale is height of graphic
-                            .domain([0, d3.max(MoviePoints, function(d) {
-                                return d[3];  // input domain
-                            })])
+                            .domain([0, maxAdjusted])
                             .range([canvas_height - padding, padding]);  // remember y starts on top going down so we flip
 
             // Define X axis
@@ -286,9 +381,12 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
 
  var update = function(movies){
                 
+                    //get min and max of new fields
+
+
                     // Update scale domains
-                    xScale.domain([0,250000000]);
-                    yScale.domain([0, 100]);
+                    xScale.domain([Minx,Maxx]);
+                    yScale.domain([Miny, Maxy]);
 
                     // Update circles
                     svg.selectAll("circle")
@@ -339,7 +437,7 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
 
 
 
-            d3.select("h4")
+            /*d3.select("h4")
                 .on("click", function() {
                     var numValues = MoviePoints.length;  // Get original dataset's length
                     var maxRange = Math.random() * 1000;  // Get max range of new values
@@ -395,7 +493,7 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
                             .transition()
                             .duration(100)
                             .call(yAxis);
-                });
+                })*/
  
   </script>
 
