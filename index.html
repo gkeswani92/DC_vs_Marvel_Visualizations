@@ -25,12 +25,17 @@
             function drawWorldMap(){
                 var map = new Datamap({
                     element: document.getElementById('container'),
+                    projection: 'mercator',
                     fills: {
                         defaultFill: 'rgba(0,0,0,0.4)'
                     },
                     geographyConfig: {
                         highlightOnHover: true,
-                        popupOnHover: true
+                        hideHawaiiAndAlaska : true,
+                        popupOnHover: true,
+                    },
+                    bubblesConfig: {
+                        borderWidth: 0,
                     },
                     fills: {
                         'DC': '#0000FF',
@@ -73,7 +78,7 @@
                                                 "company":franchise,
                                                 "fillKey":franchise,
                                                 "film":movie_name,
-                                                radius: revenue * 100 * 3 / total_revenue};
+                                                radius: revenue * 100 * 5 / total_revenue};
                                     bubbleData.push(obj);
                                 }
                             }
