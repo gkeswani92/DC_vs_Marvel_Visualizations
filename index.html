@@ -14,52 +14,87 @@
         <div id="container" style="position: absolute; width: 100%; height: 1000px;"></div>
 
         <script>
+            var data = ['country', 'revenue','latitude','longitude'];
+            var bubbleData = [];
+
             console.log(countryData);
             console.log(movieRevenue);
 
-            var map = new Datamap({
-                element: document.getElementById('container'),
-                fills: {
-                    defaultFill: 'rgba(0,0,0,0.4)'
-                },
-                geographyConfig: {
-                    highlightOnHover: true,
-                    popupOnHover: true
-                }
-            });
+            //Draws the world map on the canvas with the required hover and pop up
+            //properties
+            function drawWorldMap(){
+                var map = new Datamap({
+                    element: document.getElementById('container'),
+                    fills: {
+                        defaultFill: 'rgba(0,0,0,0.4)'
+                    },
+                    geographyConfig: {
+                        highlightOnHover: true,
+                        popupOnHover: true
+                    },
+                    fills: {
+                        'DC': '#0000FF',
+                        'Marvel': '#FF0000',
+                        defaultFill: 'rgba(0,0,0,0.4)'
+                    },
+                    data: {
+                        'DC': {fillKey: 'DC'},
+                        'Marvel': {fillKey: 'Marvel'},
+                    }
+                });
+                return map;
+            }
 
-            var data = ['country', 'revenue','latitude','longitude'];
-            var bubbleData = [];
-            var total_revenue = 1215439994;
+            function drawBubbles(movie1, movie2){
 
-            for (var movie_name in movieRevenue){
-                if(movie_name = "Iron Man 3"){
-                    if (movieRevenue.hasOwnProperty(movie_name)) {
-                        var movie_data = movieRevenue[movie_name];
-                        for (var data in movie_data){
-                            var country = data;
-                            if(countryData.hasOwnProperty(country)){
-                                var revenue = movie_data[data];
-                                var latitude = countryData[country]["latitude"];
-                                var longitude = countryData[country]["longitude"];
-                                var obj = {"country":country, "revenue":revenue, "latitude":latitude, "longitude":longitude, radius: revenue * 100 * 3 / total_revenue};
-                                bubbleData.push(obj);
+                //Collection data for the movies that have been passed in
+                for (var movie_name in movieRevenue){
+                    if(movie_name == movie1 || movie_name == movie2){
+                        if (movieRevenue.hasOwnProperty(movie_name)) {
+                            var movie_data = movieRevenue[movie_name];
+
+                            //From the data, checking if we have enough information
+                            //to plot the movie for every country
+                            for (var data in movie_data){
+                                var country = data;
+                                var total_revenue = movie_data["ADJUSTED"];
+                                var franchise = movie_data["COMPANY"];
+
+                                //If we have the corresponding latitude and
+                                //longitude for the country, add it to the bubble data
+                                if(countryData.hasOwnProperty(country)){
+                                    var revenue = movie_data[data];
+                                    var latitude = countryData[country]["latitude"];
+                                    var longitude = countryData[country]["longitude"];
+                                    var obj = {"country":country,
+                                                "revenue":revenue,
+                                                "latitude":latitude,
+                                                "longitude":longitude,
+                                                "company":franchise,
+                                                "fillKey":franchise,
+                                                radius: revenue * 100 * 3 / total_revenue};
+                                    bubbleData.push(obj);
+                                }
                             }
                         }
                     }
                 }
+
+                //Draw bubbles for the data
+                map.bubbles(bubbleData, {
+                                            popupTemplate: function (geo, data) {
+                                                   return ['<div class="hoverinfo">' + '',
+                                                   '<br/>Country: ' +  data.country + '',
+                                                   '<br/>Country: ' +  data.company + '',
+                                                   '<br/>Revenue: ' +  '$' + data.revenue + '',
+                                                   '<br/>% Revenue: ' + data.revenue * 100 / total_revenue  + '%',
+                                                   '</div>'].join('');
+                                            }
+                });
             }
 
-            //draw bubbles for the data
-            map.bubbles(bubbleData, {
-                            popupTemplate: function (geo, data) {
-                                   return ['<div class="hoverinfo">' + '',
-                                   '<br/>Country: ' +  data.country + '',
-                                   '<br/>Revenue: ' +  '$' + data.revenue + '',
-                                   '<br/>% Revenue: ' + data.revenue * 100 / total_revenue  + '%',
-                                   '</div>'].join('');
-                            }
-                        });
+            var map = drawWorldMap();
+            drawBubbles("Iron Man 3","The Dark Knight Rises");
         </script>
     </body>
 </html>
