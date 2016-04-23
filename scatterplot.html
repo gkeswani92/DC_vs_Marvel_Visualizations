@@ -242,6 +242,12 @@
             return yScale(d[3]);
         })
         .attr("r", 3) //TODO: Needs to dynamically done
+        .style("fill", function(d){
+                                    if (d[1]=="DC"){
+                                        return "blue"
+                                    } else {
+                                        return "red"
+                                    }})
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
