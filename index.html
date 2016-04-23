@@ -72,6 +72,7 @@
                                                 "longitude":longitude,
                                                 "company":franchise,
                                                 "fillKey":franchise,
+                                                "film":movie_name,
                                                 radius: revenue * 100 * 3 / total_revenue};
                                     bubbleData.push(obj);
                                 }
@@ -80,12 +81,19 @@
                     }
                 }
 
+                //Sorting so that small radius will be displayed over the bigger radius
+                //bubble so that both can be hovered on
+                bubbleData.sort(function(a, b) {
+                    return b.radius - a.radius;
+                });
+
                 //Draw bubbles for the data
                 map.bubbles(bubbleData, {
                                             popupTemplate: function (geo, data) {
                                                    return ['<div class="hoverinfo">' + '',
+                                                   '<br/>Movie: ' +  data.film + '',
                                                    '<br/>Country: ' +  data.country + '',
-                                                   '<br/>Country: ' +  data.company + '',
+                                                   '<br/>Franchise: ' +  data.company + '',
                                                    '<br/>Revenue: ' +  '$' + data.revenue + '',
                                                    '<br/>% Revenue: ' + data.revenue * 100 / total_revenue  + '%',
                                                    '</div>'].join('');
@@ -94,7 +102,7 @@
             }
 
             var map = drawWorldMap();
-            drawBubbles("Iron Man 3","The Dark Knight Rises");
+            drawBubbles("Iron Man 3", "The Dark Knight Rises");
         </script>
     </body>
 </html>
