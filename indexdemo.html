@@ -34,6 +34,14 @@
     <h4>Click on this text to update chart with new values</h4>
     <h3 id = "xScales">Select X Scale <h3>
     <h3 id = "yScales">Select Y Scale <h3>
+    <h3 id = "zScales">Select Size Scale 
+        <div> 
+        <select id="zdropdown" class="zdropdown" onchange = "updatez()">
+            <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+            <option value="BUDGET" selected = "selected" >Budget</option>
+        </select>
+    </h3>
+    </div>                                                                                                                      
     <h3 id = "Scatter"></h3>
   
   <!-- Begin D3 Javascript -->
@@ -56,11 +64,7 @@ var ybuttons =["yTomato", "yBudget", "ySales"]
 //Initial x,y categories
 var xselection = "RELEASE"
 var yselection = "ADJUSTED"
-
-
-
-
-
+var zselection = zdropdown.value
 
 
 
@@ -137,13 +141,6 @@ var yselection = "ADJUSTED"
 {"COMPANY":"Marvel","FILM":"Fantastic Four","RELEASE":"2015","ADJUSTED":"167977596","Assignment":"Peimin","WORLDWIDE":"167977596","DOMESTIC":"56117548","FOREIGN":"111860048","Rotten_Tomatoes":"9","BUDGET":"120000000","STUDIO":"Fox"},
 {"COMPANY":"Marvel","FILM":"Deadpool","RELEASE":"2016","ADJUSTED":"758691328","Assignment":"Skylar","WORLDWIDE":"758691328","DOMESTIC":"360173154","FOREIGN":"398518174","Rotten_Tomatoes":"83","BUDGET":"58000000","STUDIO":"Fox"}];
 
-//Min and Max for x domain
-var Minx;
-var Maxx;
-
-//Min and Max for y domain
-var Miny;
-var Maxy;
 
 
 var minRelease = Number.MAX_SAFE_INTEGER;
@@ -192,15 +189,28 @@ var SetMinMax = function(MovieJSON){
 SetMinMax(MovieJSON);
 
 
+//get range widths for each field
+AdjustedRange = maxAdjusted-minAdjusted;
+BudgetRange = maxBudget-minBudget;
+ReleaseRange = maxRelease-minRelease;
+TomatoRange = maxTomato-minTomato;
 
 
+//Min and Max for x domain (intialize to Release Year)
+var Minx = minRelease - .1*ReleaseRange;
+var Maxx = maxRelease + .1*ReleaseRange;
 
-var LoadData = function(s1, s2) {
+//Min and Max for y domain (intialize to Adjusted Sales)
+var Miny = 0;
+var Maxy = maxAdjusted + .1*AdjustedRange;
+
+
+var LoadData = function(s1, s2, s3) {
     //empty MoviePoints array
     var MoviePoints = [];
     for (var i = 0; i<MovieJSON.length;i++){
         var obj = MovieJSON[i];
-        MoviePoints.push([obj.FILM, obj.COMPANY, obj[s1], obj[s2]])
+        MoviePoints.push([obj.FILM, obj.COMPANY, Number(obj[s1]), Number(obj[s2]), Number(obj[s3])])
     }
     return MoviePoints;
 }
@@ -212,20 +222,20 @@ var updatex = function(d){
     if(d.id == "xRelease"){
         console.log("releasex");
         xselection = "RELEASE";
-        Minx = minRelease;
-        Maxx = maxRelease;
+        Minx = minRelease - .1*ReleaseRange;
+        Maxx = maxRelease + .1*ReleaseRange;
 }
     else if (d.id== "xTomato"){
         console.log("Tomatox");
         xselection = "Rotten_Tomatoes";
-        Minx = minTomato;
-        Maxx = maxTomato;}
+        Minx = minTomato - .1*TomatoRange;
+        Maxx = maxTomato + .1*TomatoRange;}
     else {
         xselection= "BUDGET";
-        Minx = minBudget;
-        Maxx = maxBudget;}
+        Minx = minBudget - .1*BudgetRange;
+        Maxx = maxBudget + .1*BudgetRange;}
 
-    MoviePoints = LoadData(xselection,yselection);
+    MoviePoints = LoadData(xselection,yselection,zselection);
     update(MoviePoints)
 
 }
@@ -236,19 +246,25 @@ var updatey = function(d){
     
     if(d.id == "yBudget"){
         yselection = "BUDGET";
-        Miny = minBudget;
-        Maxy = maxBudget;
+        Miny = minBudget - .1*BudgetRange;
+        Maxy = maxBudget + .1*BudgetRange;
     }
     else if (d.id == "ySales"){
         yselection = "ADJUSTED";
-        Miny = minAdjusted;
-        Maxy = maxAdjusted;}
+        Miny = 0;
+        Maxy = maxAdjusted + .1*AdjustedRange;}
     else {
         yselection= "Rotten_Tomatoes";
-        Miny = minTomato;
-        Maxy = maxTomato;}
-    MoviePoints = LoadData(xselection,yselection);
+        Miny = minTomato - .1*TomatoRange;
+        Maxy = maxTomato + .1*TomatoRange;}
+    MoviePoints = LoadData(xselection,yselection,zselection);
     update(MoviePoints);
+}
+
+var updatez = function(){
+    zselection = zdropdown.value;
+     MoviePoints = LoadData(xselection,yselection,zselection);
+     update(MoviePoints);
 }
 
 
@@ -282,11 +298,9 @@ d3.select("#yBudget").on("click", function(d){updatey(this)});
 d3.select("#ySales").on("click", function(d){updatey(this)});
 
 
-
-
 //Have an x scale and y scale been chosen?
 
-MoviePoints = LoadData(xselection,yselection);
+MoviePoints = LoadData(xselection,yselection,zselection);
 
 
 
@@ -303,10 +317,9 @@ MoviePoints = LoadData(xselection,yselection);
            // }
 
 
-//Get min year test
-var minyear = Math.min.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
+//Get min year test))
 
-var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
+
 
 
             // Setup settings for graphic
@@ -317,7 +330,7 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
 
               // Create scale functions for RELEASE year
             var xScale = d3.scale.linear()  // xScale is width of graphic
-                            .domain([minyear,maxyear])
+                            .domain([Minx,Maxx])
                             .range([padding, canvas_width - padding * 2]); // output range
 
             // Create scale functions
@@ -328,20 +341,20 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
                   //          .range([padding, canvas_width - padding * 2]); // output range
 
             var yScale = d3.scale.linear()  // yScale is height of graphic
-                            .domain([0, maxAdjusted])
+                            .domain([Miny, Maxy])
                             .range([canvas_height - padding, padding]);  // remember y starts on top going down so we flip
 
             // Define X axis
             var xAxis = d3.svg.axis()
                             .scale(xScale)
                             .orient("bottom")
-                            .ticks(5);
+                            .ticks(8);
 
             // Define Y axis
             var yAxis = d3.svg.axis()
                             .scale(yScale)
                             .orient("left")
-                            .ticks(5);
+                            .ticks(8);
 
             // Create SVG element
             var svg = d3.select("#Scatter")  // This is where we put our vis
@@ -360,15 +373,25 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
                 .attr("cy", function(d) {  // Circle's Y
                     return yScale(d[3]);
                 })
-                .attr("r", 2);  // radius
+                .attr("r", function(d){
+                    console.log(d[4])
+                    if(zdropdown.value =="Rotten_Tomatoes")
+                        {return .1*d[4]}
+                    else if(zdropdown.value =="BUDGET")
+                        {return .0000001*d[4]}})
+                .style("fill", function(d){
+                    if (d[1] == "DC"){
+                        return "blue";}
+                    else {return "red"}})
+                    .style("opacity",.6);  // radius
 
-            // Add to X axis
+            // Add X axis
             svg.append("g")
                 .attr("class", "x axis")
                 .attr("transform", "translate(0," + (canvas_height - padding) +")")
                 .call(xAxis);
 
-            // Add to Y axis
+            // Add Y axis
             svg.append("g")
                 .attr("class", "y axis")
                 .attr("transform", "translate(" + padding +",0)")
@@ -381,7 +404,6 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
 
  var update = function(movies){
                 
-                    //get min and max of new fields
 
 
                     // Update scale domains
@@ -396,7 +418,7 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
                         .each("start", function() {  // Start animation
                             d3.select(this)  // 'this' means the current element
                                 .attr("fill", "red")  // Change color
-                                .attr("r", 5);  // Change size
+                                .attr("r", function(d,i){return 10*Math.random()});  // Change size
                         })
                         .delay(function(d, i) {
                             return i / movies.length * 500;  // Dynamic delay (i.e. each item delays a little longer)
@@ -412,9 +434,13 @@ var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
                             d3.select(this)  // 'this' means the current element
                                 .transition()
                                 .duration(500)
-                                .attr("fill", "black")  // Change color
-                                .attr("r", 2);  // Change radius
-                        });
+                                //.attr("fill", "black")  // Change color
+                                .attr("r", function(d){
+                            if(zdropdown.value =="Rotten_Tomatoes")
+                                 {return .1*d[4]}
+                            else if(zdropdown.value =="BUDGET")
+                                {return .0007*Math.pow(d[4],.5)}});  // Change radius
+                                 });
 
                         // Update X Axis
                         svg.select(".x.axis")
