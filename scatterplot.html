@@ -1,224 +1,309 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <!-- Load D3 from site -->
+     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script src="tip.js"></script>
     <script src="movieData.js"></script>
     <link href='style.css' rel='stylesheet' type='text/css'>
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <!-- <link rel="stylesheet" href="/resources/demos/style.css">-->
+ 
+  <script>
+  $(function() {
+    $( "#radio" ).buttonset();
+  });
+  </script>
   </head>
+ 
+    <!-- CSS (Styling) -->
+    <style type="text/css">
+            /* Format X and Y Axis */
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: black;
+                shape-rendering: crispEdges;
+            }
 
-  <body>
-    <h2>D3 Scatterplot </h2>
-    <p>This is a data visualization using transitions with a scatterplot</p>
-    <h4>Click on this text to update chart with new values</h4>
-    <h3 id = "xScales">Select X Scale<h3>
-    <h3 id = "yScales">Select Y Scale<h3>
+            .axis text {
+                font-family: sans-serif;
+                font-size: 11px;
+            }
+    </style>
+    <!-- End CSS (Styling) -->
+
+
+
+<body>
+    <h2>Marvel vs DC </h2>
+    <p><h3> How do these two superhero universes stack up in Hollywood?</h3></p>
+    <h3 id = "xScales">Select X Scale j
+
+<!-- XScale Radio Buttons-->
+<form>
+  <div id="xradio" onchange = "xlabupdate()" >
+    <input type="radio" class = "xbutton" id="xRelease" value = "RELEASE" name="xchoose" onchange = "updatex(this)" checked = "checked" >
+        <label for="xRelease" >Year Released</label>
+    <input type="radio" class = "xbutton" id="xTomato" value = "Rotten_Tomatoes" name="xchoose" onchange = "updatex(this)">
+        <label for="xTomato" onchange = "updatex(this)" >Rotten Tomatoes Score</label>
+    <input type="radio" class = "xbutton" id="xBudget" value = "BUDGET" name="xchoose" onchange = "updatex(this)">
+        <label for="xBudget" >Film Budget</label>
+  </div>
+</form>
+
+<!-- Scale Radio Buttons-->
+        <h3>
+    <h3 id = "yScales">Select Y Scale 
+<form>
+  <div id="yradio" onchange = "ylabupdate()">
+    <input type="radio" id="yTomato" value="Rotten_Tomatoes" name = "ychoose" onchange = "updatey(this)">
+        <label for="yTomato1" >Rotten Tomatoes Score</label>
+    <input type="radio" id="yBudget" value="BUDGET" name = "ychoose" onchange = "updatey(this)">
+        <label for="yBudget">Film Budget</label>
+    <input type="radio" id="ySales" value="ADJUSTED" name = "ychoose" checked="checked" onchange = "updatey(this)">
+        <label for="ySales">Adjusted Revenue</label>
+  </div>
+</form>
+        <h3>
+    <h3 id = "zScales">Select Size Scale 
+        <div> 
+        <select id="zdropdown" class="zdropdown" onchange = "updatez()">
+            <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+            <option value="BUDGET" selected = "selected" >Budget</option>
+            <option value="NONE" > None</option>
+        </select>
+    </h3>
+    </div>                                                                                                                      
     <h3 id = "Scatter"></h3>
-
+  
   <!-- Begin D3 Javascript -->
   <script type="text/javascript">
 
-    //X scale buttons
-    var xbuttonNames = ["Year Released", "Rotten Tomatoes Score", "Budget"]
-    var xbuttons =["xRelease", "xTomato", "xBudget"]
 
-    //Y scale buttons
-    var ybuttonNames = ["Rotten Tomatoes Score", "Budget", "Sales"]
-    var ybuttons =["yTomato", "yBudget", "ySales"]
 
-    //Initial x,y categories
-    var xselection = "RELEASE"
-    var yselection = "ADJUSTED"
+//Initial x,y categories
+var xselection = "RELEASE"
+var yselection = "ADJUSTED"
+var zselection = zdropdown.value
 
-    //Min and Max for x domain
-    var Minx;
-    var Maxx;
 
-    //Min and Max for y domain
-    var Miny;
-    var Maxy;
-    var minRelease = Number.MAX_SAFE_INTEGER;
-    var maxRelease = 0;
-    var minAdjusted = Number.MAX_SAFE_INTEGER;
-    var maxAdjusted = 0;
-    var minBudget = Number.MAX_SAFE_INTEGER;
-    var maxBudget = 0;
-    var minTomato = Number.MAX_SAFE_INTEGER;
-    var maxTomato = 0;
 
-    var SetMinMax = function(MovieJSON){
-        var R;
-        var A;
-        var B;
-        var T;
-        for(var i = 0; i< MovieJSON.length;i++){
-            R = Number(MovieJSON[i].RELEASE);
-            if (R < minRelease){
-                minRelease = R;
-            }
-            if (R > maxRelease) {
-                maxRelease = R;
-            }
 
-            A = Number(MovieJSON[i].ADJUSTED);
-            if (A < minAdjusted){
-                minAdjusted = A;
-            }
-            if (A > maxAdjusted) {
-                maxAdjusted = A;
-            }
+//Get relevant min and max field values
+var minRelease = Number.MAX_SAFE_INTEGER;
+var maxRelease = 0;
+var maxAdjusted = 0;
+var maxBudget = 0;
+var SetMinMax = function(MovieJSON){
+    var R
+    var A
+    var B
+    for(var i = 0; i< MovieJSON.length;i++){
+    R = Number(MovieJSON[i].RELEASE);
+    if (R < minRelease){
+        minRelease = R;
+    }
+    if (R > maxRelease) {
+        maxRelease = R;
+    }
+    A = Number(MovieJSON[i].ADJUSTED);
+    if (A > maxAdjusted) {
+        maxAdjusted = A;
+    }
+    B = Number(MovieJSON[i].BUDGET);
+    if (B > maxBudget) {
+        maxBudget = B;
+    }
+};}
 
-            B = Number(MovieJSON[i].BUDGET);
-            if (B < minBudget){
-                minBudget = B;
-            }
-            if (B > maxBudget) {
-                maxBudget = B;
-            }
+SetMinMax(MovieJSON);
 
-            T = Number(MovieJSON[i].Rotten_Tomatoes);
-            if (T < minTomato){
-                minTomato = T;
-            }
-            if (T > maxTomato) {
-                maxTomato = T;
-        }}};
-    SetMinMax(MovieJSON);
 
-    //Loads the data from the json object
-    var LoadData = function(s1, s2) {
-        //empty MoviePoints array
-        var MoviePoints = [];
-        for (var i = 0; i<MovieJSON.length;i++){
-            var obj = MovieJSON[i];
-            MoviePoints.push([obj.FILM, obj.COMPANY, obj[s1], obj[s2]])
+//get Release Date Range
+ReleaseRange = maxRelease-minRelease;
+
+
+//Min and Max for x domain (intialize to Release Year)
+var Minx = minRelease - .05*ReleaseRange;
+var Maxx = maxRelease + .05*ReleaseRange;
+
+//Min and Max for y domain (intialize to Adjusted Sales)
+var Miny = 0;
+var Maxy = 1.05*maxAdjusted
+
+
+//create array of points to display
+var LoadData = function(s1, s2, s3) {
+    //empty MoviePoints array
+    var MoviePoints = [];
+    for (var i = 0; i<MovieJSON.length;i++){
+        var obj = MovieJSON[i];
+        MoviePoints.push([obj.FILM, obj.COMPANY, Number(obj[s1]), Number(obj[s2]), Number(obj[s3])])
+    }
+    return MoviePoints;
+}
+
+
+//change x axis selection and then reload data
+var updatex = function(d){
+    console.log(d.id)
+    if(d.id == "xRelease"){
+        xselection = "RELEASE";
+        Minx = minRelease - .05*ReleaseRange;
+        Maxx = maxRelease + .05*ReleaseRange;
+}
+    else if (d.id== "xTomato"){
+        xselection = "Rotten_Tomatoes";
+        Minx = 0;
+        Maxx = 100;}
+    else {
+        xselection= "BUDGET";
+        Minx = 0;
+        Maxx = 1.05*maxBudget}
+
+    MoviePoints = LoadData(xselection,yselection,zselection);
+    update(MoviePoints)
+
+}
+
+
+//change y axis selection and then reload data
+var updatey = function(d){
+    console.log(d.id)
+    if(d.id == "yBudget"){
+        yselection = "BUDGET";
+        Miny = 0;
+        Maxy = 1.05*maxBudget;
+    }
+    else if (d.id == "ySales"){
+        yselection = "ADJUSTED";
+        Miny = 0;
+        Maxy = 1.05*maxAdjusted;}
+    else {
+        yselection= "Rotten_Tomatoes";
+        Miny = 0;
+        Maxy = 100;}
+    MoviePoints = LoadData(xselection,yselection,zselection);
+    update(MoviePoints);
+}
+
+
+//change size scale selection
+var updatez = function(){
+    zselection = zdropdown.value;
+     MoviePoints = LoadData(xselection,yselection,zselection);
+     update(MoviePoints);
+}
+
+
+// Setup settings for graphic
+var canvas_width = 1000;
+var canvas_height = 700;
+var padding = 150;  // for chart edges
+
+
+// Create initial x scale functions for RELEASE year
+var xScale = d3.scale.linear()  // xScale is width of graphic
+    .domain([Minx,Maxx])
+    .range([padding, canvas_width - padding * 2]); // output range
+
+var yScale = d3.scale.linear()  // yScale is height of graphic
+    .domain([Miny, Maxy])
+    .range([canvas_height - padding, padding]);  // remember y starts on top going down so we flip
+
+// Define X axis
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom")
+    .ticks(8)
+    .tickFormat(function(d) { 
+        if(xselection == "BUDGET"){
+            return "$"+d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        return MoviePoints;
-    }
+        else {return d;}});
 
-    //Updates the x axis with depending on the selected button
-    var updatex = function(d){
-        console.log(d.id)
-        if(d.id == "xRelease"){
-            console.log("releasex");
-            xselection = "RELEASE";
-            Minx = minRelease;
-            Maxx = maxRelease;
-    }
-        else if (d.id== "xTomato"){
-            console.log("Tomatox");
-            xselection = "Rotten_Tomatoes";
-            Minx = minTomato;
-            Maxx = maxTomato;}
-        else {
-            xselection= "BUDGET";
-            Minx = minBudget;
-            Maxx = maxBudget;}
-
-        MoviePoints = LoadData(xselection,yselection);
-        update(MoviePoints)
-    }
-
-    //Updates the y axis with depending on the selected button
-    var updatey = function(d){
-
-        if(d.id == "yBudget"){
-            yselection = "BUDGET";
-            Miny = minBudget;
-            Maxy = maxBudget;
+// Define Y axis
+var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient("left")
+    .ticks(8)
+    .tickFormat(function(d) {
+        if((yselection == "ADJUSTED") ||(yselection == "BUDGET")){
+            return "$"+d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        else if (d.id == "ySales"){
-            yselection = "ADJUSTED";
-            Miny = minAdjusted;
-            Maxy = maxAdjusted;}
-        else {
-            yselection= "Rotten_Tomatoes";
-            Miny = minTomato;
-            Maxy = maxTomato;}
-        MoviePoints = LoadData(xselection,yselection);
-        update(MoviePoints);
-    }
+        else{return d;}
+    });
 
-    //Create x axis Buttons
-    d3.select("#xScales")
-        .selectAll("input")
-        .data(xbuttonNames)
-        .enter().append("input")
-        .attr("type","button")
-        .attr("class","xbutton")
-        .attr("value", function (d){return d;} );
+// Create SVG element
+var svg = d3.select("#Scatter")  // This is where we put our vis
+    .append("svg")
+    .attr("width", canvas_width)
+    .attr("height", canvas_height)
 
-    //Create unique id's
-    d3.selectAll(".xbutton")[0]
-        .forEach(function(d,i){
-            d.setAttribute("id",xbuttons[i])});
-
-    //update chart on click
-    d3.select("#xRelease").on("click", function(d){updatex(this)});
-    d3.select("#xTomato").on("click", function(d){updatex(this)});
-    d3.select("#xBudget").on("click", function(d){updatex(this)});
+//Add Axis Labels
+var xlabupdate = function(){
+    d3.select("#xlab").remove();
+    console.log(xselection);
+    svg.append("text").attr("id","xlab")
+    .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+    .attr("transform", "translate("+ (3*canvas_width/7) +","+(canvas_height-(.7*padding))+")")  // centre below axis
+    .text(function(){
+    console.log("hi");
+        if(xselection == "Rotten_Tomatoes"){
+            return "Rotten Tomatoes Score"
+            }
+        else if(xselection == "BUDGET"){
+            return "Film Budget"
+            }
+        else if(xselection == "RELEASE"){
+              return "Release Year"
+         }});}
 
 
-    d3.select("#yScales")
-        .selectAll("input")
-        .data(ybuttonNames)
-        .enter().append("input")
-        .attr("type","button")
-        .attr("class","ybutton")
-        .attr("value", function (d){return d;} );
 
-    d3.selectAll(".ybutton")[0]
-        .forEach(function(d,i){
-            d.setAttribute("id",ybuttons[i])});
+var ylabupdate = function(){
+    d3.select("#ylab").remove();
+    console.log(yselection);
+    svg.append("text").attr("id","ylab")
+    .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+    .attr("transform", function(d){
+        if(yselection != "Rotten_Tomatoes"){
+            return "translate("+padding/2.7+","+(canvas_height/2)+") rotate(-90)";
+            }
+        else {return "translate("+padding/1.4+","+(canvas_height/2)+") rotate(-90)";}})
+    .text(function(){
+    console.log("hi");
+        if(yselection == "Rotten_Tomatoes"){
+            return "Rotten Tomatoes Score"
+            }
+        else if(yselection == "BUDGET"){
+            return "Film Budget"
+        }
+        else if(yselection == "ADJUSTED"){
+            return "Adjusted Revenue"
+        }});
 
-    d3.select("#yTomato").on("click", function(d){updatey(this)});
-    d3.select("#yBudget").on("click", function(d){updatey(this)});
-    d3.select("#ySales").on("click", function(d){updatey(this)});
-
-
-    //Have an x scale and y scale been chosen?
-    MoviePoints = LoadData(xselection,yselection);
-
-    //Get min year test
-    var minyear = Math.min.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
-    var maxyear = Math.max.apply(Math,MovieJSON.map(function(o){return o.RELEASE;}))
-
-
-    // Setup settings for graphic
-    var canvas_width = 800;
-    var canvas_height = 500;
-    var padding = 100;  // for chart edges
+}
 
 
-    // Create scale functions for RELEASE year
-    var xScale = d3.scale.linear()  // xScale is width of graphic
-                    .domain([minyear,maxyear])
-                    .range([padding, canvas_width - padding * 2]); // output range
 
-    var yScale = d3.scale.linear()  // yScale is height of graphic
-                    .domain([0, maxAdjusted])
-                    .range([canvas_height - padding, padding]);  // remember y starts on top going down so we flip
 
-    // Define X axis
-    var xAxis = d3.svg.axis()
-                    .scale(xScale)
-                    .orient("bottom")
-                    .ticks(5);
+//Load Initial Data
+MoviePoints = LoadData(xselection,yselection,zselection);
 
-    // Define Y axis
-    var yAxis = d3.svg.axis()
-                    .scale(yScale)
-                    .orient("left")
-                    .ticks(5);
+//Set initial x axis label
+xlabupdate();
 
-    // Create SVG element
-    var svg = d3.select("#Scatter")  // This is where we put our vis
-        .append("svg")
-        .attr("width", canvas_width)
-        .attr("height", canvas_height)
+//Set intial y labels
+ylabupdate();
 
-    //Creating a custom tip element for the hovering on the bubbles
+
+
+ //Creating a custom tip element for the hovering on the bubbles
     var tip = d3.tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -229,87 +314,105 @@
             +  "<strong>Sales:</strong> <span style='color:red'>" + d[3] + " </span> <br/>";
       })
       svg.call(tip);
+  
 
-    // Create Circles
+
+
+
+
+
+// Create Circles
+svg.selectAll("circle")
+    .data(MoviePoints)
+    .enter()
+    .append("circle")  // Add circle svg
+    .attr("cx", function(d) {
+        return xScale(d[2]);  // Circle's X
+        })
+    .attr("cy", function(d) {  // Circle's Y
+        return yScale(d[3]);
+        })
+    .attr("r", function(d){
+        if(zdropdown.value =="Rotten_Tomatoes")
+            {return .1*d[4]}
+        else if(zdropdown.value =="BUDGET")
+            {return .0007*Math.pow(d[4],.52)}
+        else if(zdropdown.value == "NONE")
+            {return 4}})
+    .style("fill", function(d){
+        if (d[1] == "DC"){
+            return "blue";}
+            else {return "red"}})
+    .style("opacity",.6)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);;  // radius
+
+// Add X axis
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + (canvas_height - padding) +")")
+    .call(xAxis);
+
+// Add Y axis
+svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + padding +",0)")
+    .call(yAxis);
+
+
+ var update = function(movies){
+    // Update scale domains
+    xScale.domain([Minx,Maxx]);
+    yScale.domain([Miny, Maxy]);
+
+    // Update circles
     svg.selectAll("circle")
-        .data(MoviePoints)
-        .enter()
-        .append("circle")  // Add circle svg
+        .data(MoviePoints)  // Update with new data
+        .transition()  // Transition from old to new
+        .duration(1000)  // Length of animation
+        .each("start", function() {  // Start animation
+            d3.select(this)  // 'this' means the current element
+                .attr("fill", "red")  // Change color
+                .attr("r", function(d,i){return 10*Math.random()});  // Change size
+        })
+        .delay(function(d, i) {
+            return i / movies.length * 500;  // Dynamic delay (i.e. each item delays a little longer)
+        })
+        .ease("linear")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("cx", function(d) {
             return xScale(d[2]);  // Circle's X
         })
-        .attr("cy", function(d) {  // Circle's Y
-            return yScale(d[3]);
+        .attr("cy", function(d) {
+            return yScale(d[3]);  // Circle's Y
         })
-        .attr("r", 3) //TODO: Needs to dynamically done
-        .style("fill", function(d){
-                                    if (d[1]=="DC"){
-                                        return "blue"
-                                    } else {
-                                        return "red"
-                                    }})
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-
-    // Add to X axis
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + (canvas_height - padding) +")")
-        .call(xAxis);
-
-    // Add to Y axis
-    svg.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + padding +",0)")
-        .call(yAxis);
-
-    // On click, update with new data
-    var update = function(movies){
-
-        // Update scale domains
-        xScale.domain([Minx,Maxx]);
-        yScale.domain([Miny, Maxy]);
-
-        // Update circles
-        svg.selectAll("circle")
-            .data(MoviePoints)  // Update with new data
-            .transition()  // Transition from old to new
-            .duration(1000)  // Length of animation
-            .each("start", function() {  // Start animation
-                d3.select(this)  // 'this' means the current element
-                    .attr("fill", "red")  // Change color
-                    .attr("r", 5);  // Change size
-            })
-            .delay(function(d, i) {
-                return i / movies.length * 500;  // Dynamic delay (i.e. each item delays a little longer)
-            })
-            .ease("linear")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
-            .attr("cx", function(d) {
-                return xScale(d[2]);  // Circle's X
-            })
-            .attr("cy", function(d) {
-                return yScale(d[3]);  // Circle's Y
-            })
-            .each("end", function() {  // End animation
-                d3.select(this)  // 'this' means the current element
-                    .transition()
-                    .duration(500)
-                    .attr("fill", "black")  // Change color
-                    .attr("r", 2);  // Change radius
-            });
-
-            // Update X Axis
-            svg.select(".x.axis")
+        .each("end", function() {  // End animation
+            d3.select(this)  // 'this' means the current element
                 .transition()
-                .duration(1000)
-                .call(xAxis);
+                .duration(500)
+                //.attr("fill", "black")  // Change color
+                .attr("r", function(d){
+            if(zdropdown.value =="Rotten_Tomatoes")
+                 {return .1*d[4]}
+            else if(zdropdown.value =="BUDGET")
+                {return .0007*Math.pow(d[4],.5)}
+            else if(zdropdown.value == "NONE")
+                {return 6}});  // Change radius
+                 });
 
-            // Update Y Axis
-            svg.select(".y.axis")
-                .transition()
-                .duration(100)
-                .call(yAxis);
-    };
-    </script>
-  </body>
+        // Update X Axis
+        svg.select(".x.axis")
+            .transition()
+            .duration(1000)
+            .call(xAxis);
+
+        // Update Y Axis
+        svg.select(".y.axis")
+            .transition()
+            .duration(100)
+            .call(yAxis);
+};
+
+
+
+  </script>
 </html>
