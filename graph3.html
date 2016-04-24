@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Load D3 from site -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="character.js"></script>
+    <script src="character information.js"></script>
+    
+</head>
+ 
+
+    <style type="text/css">
+    svg{  margin: 10px
+
+    }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: black;
+                shape-rendering: crispEdges;
+            }
+
+            .axis text {
+                font-family: sans-serif;
+                font-size: 11px;
+            }
+    </style>
+
+ 
+<body>
+    
+<div id ="photo"></div>
+
+<script>
+     function gethero(moviestr){
+        d3.selectAll(".character").remove();
+        height=300;
+        width=300;
+        padding=20;
+        cha=movie[moviestr].Characters;
+        company=movie[moviestr].COMPANY;
+        for (var i = 0; i< cha.length;i++){
+            name=cha[i]
+            appearance=character[cha[i]].APPEARANCES
+            image=character[cha[i]].pic
+            year=character[cha[i]].Year
+            
+
+            var svg=d3.select("#photo")
+            // .attr("class","character")
+            .append("svg")
+            .attr("class","character")
+            .attr("width",width)
+            .attr("height",height);
+
+            area = svg.selectAll("image").data([0]);
+        
+            area.enter()
+            .append("svg:image")
+            .attr("class","image")
+            .attr("x",75)
+            .attr("y",20)
+            .attr("width",150)
+            .attr("height",150)
+            .attr("xlink:href",image);
+
+            svg.append("text")
+            .attr("x",75)
+            .attr("y",200)
+            .text("Name: "+name);
+
+            svg.append("text")
+            .attr("x",75)
+            .attr("y",220)
+            .text("Year: "+year);
+
+            lScale=d3.scale.linear().domain([0,4050]).range([0,150]);
+
+            svg.append("rect")
+            .attr("x", 75)
+            .attr("y", 240)
+            .attr("width", lScale(appearance))
+            .attr("height",20)
+            .style("fill",function(){if(company=="DC"){return "blue";} else{ return "red"}})
+            .style("opacity",0.6)
+        ;
+
+
+
+
+
+          
+     }
+         
+         }
+         
+         gethero("Superman II")
+         gethero("Supergirl")
+         gethero("Superman II")
+
+ 
+</script>
+</body>
+     
+</html>
