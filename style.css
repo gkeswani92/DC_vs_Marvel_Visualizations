@@ -39,3 +39,11 @@
     font-family: sans-serif;
     font-size: 11px;
 }
+
+#ScaleSelection {
+position: relative;
+top: 280px;
+left:  700px;
+width: 163px;
+height: 210px;
+border: 2px solid #800080;
