@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,19 +6,13 @@
      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script src="tip.js"></script>
-    <script src="movieData.js"></script>
+   <!-- <script src="movieData.js"></script>-->
+    <script src = "Movies.js"></script>
     <link href='style.css' rel='stylesheet' type='text/css'>
      <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <!-- <link rel="stylesheet" href="/resources/demos/style.css">-->
- 
-  <script>
-  $(function() {
-    $( "#radio" ).buttonset();
-  });
-  </script>
-  </head>
  
     <!-- CSS (Styling) -->
     <style type="text/css">
@@ -33,7 +28,18 @@
                 font-family: sans-serif;
                 font-size: 11px;
             }
+
+    #ScaleSelection {
+    position: relative;
+    top: 280px;
+    left:  700px;
+    width: 163px;
+    height: 210px;
+    border: 2px solid #800080;
+}
     </style>
+
+
     <!-- End CSS (Styling) -->
 
 
@@ -41,43 +47,49 @@
 <body>
     <h2>Marvel vs DC </h2>
     <p><h3> How do these two superhero universes stack up in Hollywood?</h3></p>
-    <h3 id = "xScales">Select X Scale j
+    <div id = "ScaleSelection">
+    <h3 id = "xScales">Select X Scale 
+        
+        <select id="xdropdown" class="xdropdown" onchange = "updatex()">
+             <option value="RELEASE" selected = "selected" >Release Year</option>
+            <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+             <option value="IMDB" >IMDB Score</option>
+            <option value="ADJBUDGET" >Budget</option>
+            <option value="ADJUSTED" >Revenue</option>
+        </select>
+    </h3>
+      
 
-<!-- XScale Radio Buttons-->
-<form>
-  <div id="xradio" onchange = "xlabupdate()" >
-    <input type="radio" class = "xbutton" id="xRelease" value = "RELEASE" name="xchoose" onchange = "updatex(this)" checked = "checked" >
-        <label for="xRelease" >Year Released</label>
-    <input type="radio" class = "xbutton" id="xTomato" value = "Rotten_Tomatoes" name="xchoose" onchange = "updatex(this)">
-        <label for="xTomato" onchange = "updatex(this)" >Rotten Tomatoes Score</label>
-    <input type="radio" class = "xbutton" id="xBudget" value = "BUDGET" name="xchoose" onchange = "updatex(this)">
-        <label for="xBudget" >Film Budget</label>
-  </div>
-</form>
-
-<!-- Scale Radio Buttons-->
-        <h3>
     <h3 id = "yScales">Select Y Scale 
-<form>
-  <div id="yradio" onchange = "ylabupdate()">
-    <input type="radio" id="yTomato" value="Rotten_Tomatoes" name = "ychoose" onchange = "updatey(this)">
-        <label for="yTomato1" >Rotten Tomatoes Score</label>
-    <input type="radio" id="yBudget" value="BUDGET" name = "ychoose" onchange = "updatey(this)">
-        <label for="yBudget">Film Budget</label>
-    <input type="radio" id="ySales" value="ADJUSTED" name = "ychoose" checked="checked" onchange = "updatey(this)">
-        <label for="ySales">Adjusted Revenue</label>
-  </div>
-</form>
+         
+        <select id="ydropdown" class="ydropdown" onchange = "updatey()">
+            <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+             <option value="IMDB" >IMDB Score</option>
+            <option value="ADJBUDGET">Budget</option>
+            <option value="ADJUSTED" selected = "selected" >Revenue</option>
+        </select>
+    </h3>
+                             
+
         <h3>
     <h3 id = "zScales">Select Size Scale 
-        <div> 
+        
         <select id="zdropdown" class="zdropdown" onchange = "updatez()">
             <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
-            <option value="BUDGET" selected = "selected" >Budget</option>
+             <option value="IMDB" >IMDB Score</option>
+             <option value="ADJUSTED" >Adjusted Revenue</option>
+            <option value="ADJBUDGET" selected = "selected" >Adjusted Budget</option>
             <option value="NONE" > None</option>
         </select>
     </h3>
-    </div>                                                                                                                      
+      
+    </div> 
+
+    <div id = "SizeLegend"> 
+    	<svg id = "Legend"> 
+    	</svg>
+    </div>
+
     <h3 id = "Scatter"></h3>
   
   <!-- Begin D3 Javascript -->
@@ -86,8 +98,8 @@
 
 
 //Initial x,y categories
-var xselection = "RELEASE"
-var yselection = "ADJUSTED"
+var xselection = xdropdown.value
+var yselection = ydropdown.value
 var zselection = zdropdown.value
 
 
@@ -114,7 +126,7 @@ var SetMinMax = function(MovieJSON){
     if (A > maxAdjusted) {
         maxAdjusted = A;
     }
-    B = Number(MovieJSON[i].BUDGET);
+    B = Number(MovieJSON[i].ADJBUDGET);
     if (B > maxBudget) {
         maxBudget = B;
     }
@@ -148,218 +160,8 @@ var LoadData = function(s1, s2, s3) {
 }
 
 
-//change x axis selection and then reload data
-var updatex = function(d){
-    console.log(d.id)
-    if(d.id == "xRelease"){
-        xselection = "RELEASE";
-        Minx = minRelease - .05*ReleaseRange;
-        Maxx = maxRelease + .05*ReleaseRange;
-}
-    else if (d.id== "xTomato"){
-        xselection = "Rotten_Tomatoes";
-        Minx = 0;
-        Maxx = 100;}
-    else {
-        xselection= "BUDGET";
-        Minx = 0;
-        Maxx = 1.05*maxBudget}
 
-    MoviePoints = LoadData(xselection,yselection,zselection);
-    update(MoviePoints)
-
-}
-
-
-//change y axis selection and then reload data
-var updatey = function(d){
-    console.log(d.id)
-    if(d.id == "yBudget"){
-        yselection = "BUDGET";
-        Miny = 0;
-        Maxy = 1.05*maxBudget;
-    }
-    else if (d.id == "ySales"){
-        yselection = "ADJUSTED";
-        Miny = 0;
-        Maxy = 1.05*maxAdjusted;}
-    else {
-        yselection= "Rotten_Tomatoes";
-        Miny = 0;
-        Maxy = 100;}
-    MoviePoints = LoadData(xselection,yselection,zselection);
-    update(MoviePoints);
-}
-
-
-//change size scale selection
-var updatez = function(){
-    zselection = zdropdown.value;
-     MoviePoints = LoadData(xselection,yselection,zselection);
-     update(MoviePoints);
-}
-
-
-// Setup settings for graphic
-var canvas_width = 1000;
-var canvas_height = 700;
-var padding = 150;  // for chart edges
-
-
-// Create initial x scale functions for RELEASE year
-var xScale = d3.scale.linear()  // xScale is width of graphic
-    .domain([Minx,Maxx])
-    .range([padding, canvas_width - padding * 2]); // output range
-
-var yScale = d3.scale.linear()  // yScale is height of graphic
-    .domain([Miny, Maxy])
-    .range([canvas_height - padding, padding]);  // remember y starts on top going down so we flip
-
-// Define X axis
-var xAxis = d3.svg.axis()
-    .scale(xScale)
-    .orient("bottom")
-    .ticks(8)
-    .tickFormat(function(d) { 
-        if(xselection == "BUDGET"){
-            return "$"+d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        else {return d;}});
-
-// Define Y axis
-var yAxis = d3.svg.axis()
-    .scale(yScale)
-    .orient("left")
-    .ticks(8)
-    .tickFormat(function(d) {
-        if((yselection == "ADJUSTED") ||(yselection == "BUDGET")){
-            return "$"+d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        else{return d;}
-    });
-
-// Create SVG element
-var svg = d3.select("#Scatter")  // This is where we put our vis
-    .append("svg")
-    .attr("width", canvas_width)
-    .attr("height", canvas_height)
-
-//Add Axis Labels
-var xlabupdate = function(){
-    d3.select("#xlab").remove();
-    console.log(xselection);
-    svg.append("text").attr("id","xlab")
-    .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-    .attr("transform", "translate("+ (3*canvas_width/7) +","+(canvas_height-(.7*padding))+")")  // centre below axis
-    .text(function(){
-    console.log("hi");
-        if(xselection == "Rotten_Tomatoes"){
-            return "Rotten Tomatoes Score"
-            }
-        else if(xselection == "BUDGET"){
-            return "Film Budget"
-            }
-        else if(xselection == "RELEASE"){
-              return "Release Year"
-         }});}
-
-
-
-var ylabupdate = function(){
-    d3.select("#ylab").remove();
-    console.log(yselection);
-    svg.append("text").attr("id","ylab")
-    .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-    .attr("transform", function(d){
-        if(yselection != "Rotten_Tomatoes"){
-            return "translate("+padding/2.7+","+(canvas_height/2)+") rotate(-90)";
-            }
-        else {return "translate("+padding/1.4+","+(canvas_height/2)+") rotate(-90)";}})
-    .text(function(){
-    console.log("hi");
-        if(yselection == "Rotten_Tomatoes"){
-            return "Rotten Tomatoes Score"
-            }
-        else if(yselection == "BUDGET"){
-            return "Film Budget"
-        }
-        else if(yselection == "ADJUSTED"){
-            return "Adjusted Revenue"
-        }});
-
-}
-
-
-
-
-//Load Initial Data
-MoviePoints = LoadData(xselection,yselection,zselection);
-
-//Set initial x axis label
-xlabupdate();
-
-//Set intial y labels
-ylabupdate();
-
-
-
- //Creating a custom tip element for the hovering on the bubbles
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, 0])
-      .html(function(d) {
-        return "<strong>Movie Name:</strong> <span style='color:red'>" + d[0] + " </span> <br/>"
-            +  "<strong>Franchise:</strong> <span style='color:red'>" + d[1] + " </span> <br/>"
-            +  "<strong>Release Year:</strong> <span style='color:red'>" + d[2] + " </span> <br/>"
-            +  "<strong>Sales:</strong> <span style='color:red'>" + d[3] + " </span> <br/>";
-      })
-      svg.call(tip);
-  
-
-
-
-
-
-
-// Create Circles
-svg.selectAll("circle")
-    .data(MoviePoints)
-    .enter()
-    .append("circle")  // Add circle svg
-    .attr("cx", function(d) {
-        return xScale(d[2]);  // Circle's X
-        })
-    .attr("cy", function(d) {  // Circle's Y
-        return yScale(d[3]);
-        })
-    .attr("r", function(d){
-        if(zdropdown.value =="Rotten_Tomatoes")
-            {return .1*d[4]}
-        else if(zdropdown.value =="BUDGET")
-            {return .0007*Math.pow(d[4],.52)}
-        else if(zdropdown.value == "NONE")
-            {return 4}})
-    .style("fill", function(d){
-        if (d[1] == "DC"){
-            return "blue";}
-            else {return "red"}})
-    .style("opacity",.6)
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);;  // radius
-
-// Add X axis
-svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + (canvas_height - padding) +")")
-    .call(xAxis);
-
-// Add Y axis
-svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform", "translate(" + padding +",0)")
-    .call(yAxis);
-
-
+///Update Scatterplot after selection
  var update = function(movies){
     // Update scale domains
     xScale.domain([Minx,Maxx]);
@@ -392,12 +194,15 @@ svg.append("g")
                 //.attr("fill", "black")  // Change color
                 .attr("r", function(d){
             if(zdropdown.value =="Rotten_Tomatoes")
-                 {return .1*d[4]}
-            else if(zdropdown.value =="BUDGET")
-                {return .0007*Math.pow(d[4],.5)}
-            else if(zdropdown.value == "NONE")
-                {return 6}});  // Change radius
-                 });
+            {return Math.pow(d[4],.5);}
+        else if(zdropdown.value =="ADJBUDGET")
+            {return .0007*Math.pow(d[4],.5);}
+        else if(zdropdown.value =="ADJUSTED")
+            {return .0004*Math.pow(d[4],.5);}
+        else if(zdropdown.value =="IMDB")
+            {return 4*Math.pow(d[4],.5);}
+        else if(zdropdown.value == "NONE")
+            {return 5;}})
 
         // Update X Axis
         svg.select(".x.axis")
@@ -410,8 +215,450 @@ svg.append("g")
             .transition()
             .duration(100)
             .call(yAxis);
-};
+}
+)
+}
 
+
+
+
+
+//change x axis selection and then reload data
+var updatex = function(d){
+
+    xselection = xdropdown.value
+    if(xselection == "RELEASE"){
+        Minx = minRelease - .05*(ReleaseRange);
+        Maxx = maxRelease + .05*(ReleaseRange);
+    }
+    if(xselection == "ADJBUDGET"){
+        Minx = 0;
+        Maxx = 1.05*maxBudget;
+    }
+    else if (xselection == "ADJUSTED"){
+        Minx = 0;
+        Maxx = 1.05*maxAdjusted;}
+    else if (xselection == "Rotten_Tomatoes")
+    {
+        Minx = 0;
+        Maxx = 100;
+    }
+    else if (xselection == "IMDB"){
+        Minx = 2;
+        Maxx = 10;
+    }
+    MoviePoints = LoadData(xselection,yselection,zselection);
+    update(MoviePoints);
+    xlabupdate();
+    titleupdate();
+    setHoverValues();
+}	
+
+
+
+//change y axis selection and then reload data
+var updatey = function(d){
+
+    yselection = ydropdown.value
+    if(yselection == "ADJBUDGET"){
+        Miny = 0;
+        Maxy = 1.05*maxBudget;
+    }
+    else if (yselection == "ADJUSTED"){
+        Miny = 0;
+        Maxy = 1.05*maxAdjusted;}
+    else if (yselection == "Rotten_Tomatoes")
+    {
+        Miny = 0;
+        Maxy = 100;
+    }
+    else if (yselection == "IMDB"){
+        Miny = 2;
+        Maxy = 10;
+    }
+    MoviePoints = LoadData(xselection,yselection,zselection);
+    update(MoviePoints);
+    ylabupdate();
+    titleupdate();
+    setHoverValues();
+}
+
+
+//change size scale selection
+var Maxz = 0
+var updatez = function(){
+    zselection = zdropdown.value;
+   	if(zselection =="Rotten_Tomatoes"){
+   		Maxz = 100;
+   	}
+   	else if(zselection == "IMDB"){
+   		Maxz = 10;
+   	}
+   	else if(zselection == "ADJBUDGET"){
+   		Maxz = maxBudget;
+   	}
+   	else if (zselection == "ADJUSTED"){
+   		Maxz = maxAdjusted;
+   	}
+     MoviePoints = LoadData(xselection,yselection,zselection);
+     update(MoviePoints);
+     titleupdate();
+     setHoverValues();
+}
+
+
+// Setup settings for graphic
+var canvas_width = 1000;
+var canvas_height = 700;
+var padding = 150;  // for chart edges
+
+
+// Create initial x scale functions for RELEASE year
+var xScale = d3.scale.linear()  // xScale is width of graphic
+    .domain([Minx,Maxx])
+    .range([padding, canvas_width - padding * 2]); // output range
+
+var yScale = d3.scale.linear()  // yScale is height of graphic
+    .domain([Miny, Maxy])
+    .range([canvas_height - padding, padding]);  // remember y starts on top going down so we flip
+
+// Define X axis
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom")
+    .ticks(5)
+    .tickFormat(function(d) { 
+        if((xselection == "ADJBUDGET") | (xselection == "ADJUSTED")){
+            return "$"+d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        else {return d;}});
+
+// Define Y axis
+var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient("left")
+    .ticks(6)
+    .tickFormat(function(d) {
+        if((yselection == "ADJUSTED") | (yselection == "ADJBUDGET")){
+            return "$"+d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        else{return d;}
+    });
+
+// Create SVG element
+var svg = d3.select("#Scatter")  // This is where we put our vis
+    .append("svg")
+    .attr("width", canvas_width)
+    .attr("height", canvas_height)
+
+//Add Axis Labels
+var xlabupdate = function(){
+    d3.select("#xlab").remove();
+    svg.append("text").attr("id","xlab")
+    .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+    .attr("transform", "translate("+ (3*canvas_width/7) +","+(canvas_height-(.7*padding))+")")  // centre below axis
+    .text(function(){
+    console.log(xselection);
+        if(xselection == "Rotten_Tomatoes"){
+            return "Rotten Tomatoes Score";
+            }
+        else if(xselection == "ADJBUDGET"){
+            return "Adjusted Budget";
+            }
+        else if(xselection == "RELEASE"){
+              return "Release Year";
+         }
+     	else if(xselection == "IMDB"){
+     		 return "IMDB Score";
+     	}
+     	else if(xselection == "ADJUSTED"){
+     		return "Adjusted Revenue";}});
+
+}
+
+var ylabupdate = function(){
+    d3.select("#ylab").remove();
+    svg.append("text").attr("id","ylab")
+    .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+    .attr("transform", function(d){
+        if(yselection == "Rotten_Tomatoes"){
+            return "translate("+padding/1.4+","+(canvas_height/2)+") rotate(-90)";
+            }
+        else if(yselection == "IMDB"){
+            return "translate("+padding/1.3+","+(canvas_height/2)+") rotate(-90)";
+            }
+        else {return "translate("+padding/2.7+","+(canvas_height/2)+") rotate(-90)";}})
+    .text(function(){
+    console.log(yselection);
+        if(yselection == "Rotten_Tomatoes"){
+            return "Rotten Tomatoes Score";
+            }
+        else if(yselection == "ADJBUDGET"){
+            return "Adjusted Budget";
+            }
+     	else if(yselection == "IMDB"){
+     		 return "IMDB Score";
+     	}
+     	else if(yselection == "ADJUSTED"){
+     		return "Adjusted Revenue";}});
+
+}
+
+
+var first
+var second
+var maketitle = function(){
+console.log(yselection)
+console.log(xselection)
+var first 
+
+    	 if(yselection == "Rotten_Tomatoes"){
+            first = "Rotten Tomatoes Score";
+            }
+        else if(yselection == "ADJBUDGET"){
+            first = "Adjusted Budget";
+            }
+     	else if(yselection == "IMDB"){
+     		 first = "IMDB Score";
+     	}
+     	else if(yselection == "ADJUSTED"){
+     		first = "Adjusted Revenue";}
+var second
+
+		if(xselection == "Rotten_Tomatoes"){
+            second = "Rotten Tomatoes Score";
+            }
+        else if(xselection == "ADJBUDGET"){
+            second = "Adjusted Budget";
+            }
+        else if(xselection == "RELEASE"){
+            second ="Release Year";
+         }
+     	else if(xselection == "IMDB"){
+     		second ="IMDB Score";
+     	}
+     	else if(xselection == "ADJUSTED"){
+     		second = "Adjusted Revenue";}
+     
+trial = first + " vs " + second;
+     return trial;
+}
+
+
+
+
+var titleupdate = function(){
+    d3.select("#ScatterTitle").remove();
+    svg.append("text").attr("id","ScatterTitle")
+    .attr("text-anchor", "middle")
+    .attr("transform", "translate("+canvas_width/2.4+","+padding/2+")")
+    .text(maketitle())
+	.attr("font-size", "30")}
+
+
+
+
+
+var hoverx;
+var hovery;
+var hoverz;
+var setHoverValues = function()
+{
+if(xselection == "Rotten_Tomatoes"){
+            hoverx = "Rotten Tomatoes Score";
+            }
+        else if(xselection == "ADJBUDGET"){
+            hoverx = "Adjusted Budget";
+            }
+        else if(xselection == "RELEASE"){
+            hoverx ="Release Year";
+         }
+     	else if(xselection == "IMDB"){
+     		hoverx ="IMDB Score";
+     	}
+     	else{
+     		hoverx = "Adjusted Revenue";}
+
+
+
+     	if(yselection == "Rotten_Tomatoes"){
+            hovery = "Rotten Tomatoes Score";
+            }
+        else if(yselection == "ADJBUDGET"){
+            hovery = "Adjusted Budget";
+            }
+     	else if(yselection == "IMDB"){
+     		hovery ="IMDB Score";
+     	}
+     	else{hovery = "Adjusted Revenue";}
+
+
+
+     	if(zselection == "Rotten_Tomatoes"){
+            hoverz = "Rotten Tomatoes Score";
+            }
+        else if(zselection == "ADJBUDGET"){
+            hoverz = "Adjusted Budget";
+            }
+        else if(zselection == "IMDB"){
+            hoverz ="IMDB Score";
+         }
+     	else if(zselection == "ADJUSTED"){
+     		hoverz = "Adjusted Revenue";}
+
+
+
+}
+var xvalue;
+var yvalue;
+var zvalue;
+var formattedValues = function(point){
+	 if(xselection == ("ADJBUDGET") | xselection == ("ADJUSTED") ) {
+            xvalue = "$"+point[2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        else {xvalue = point[2];}
+
+	if(yselection == ("ADJBUDGET") | yselection == ("ADJUSTED") ) {
+            yvalue = "$"+point[3].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        else {yvalue = point[3];}
+
+     if(zselection == ("ADJBUDGET") | zselection == ("ADJUSTED") ) {
+            zvalue = "$"+point[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        else {zvalue = point[4];}
+
+
+
+}
+
+
+
+//MAKE size sale legend
+ThreeValues = [];
+
+var setLegendValues = function(){
+	var factor = .1;
+	for (var i = 0; i<3; i++){
+		ThreeValues[i] = factor*Maxz;
+		factor = factor + .4;
+	}
+}
+
+
+
+//Load Initial Data
+MoviePoints = LoadData(xselection,yselection,zselection);
+
+//Set initial x axis label
+xlabupdate();
+
+//Set intial y labels
+ylabupdate();
+
+//Set Initial size scale
+updatez();
+setLegendValues();
+
+//Set initial title
+titleupdate();
+
+//Set initial hover titles
+setHoverValues();
+
+//Set initial legend
+
+
+
+
+//Draw Legend
+d3.select("#Legend").selectAll("circle").data(ThreeValues).enter().append("circle").attr("cx", 0).attr("cy", 0).attr("r", function(d){
+	if(zdropdown.value =="Rotten_Tomatoes")
+            {return Math.pow(d,.5);}
+    else if(zdropdown.value =="ADJBUDGET")
+            {return .0007*Math.pow(d,.5);}
+    else if(zdropdown.value =="ADJUSTED")
+            {
+            console.log("hi")
+            return .0004*Math.pow(d,.5);}
+    else if(zdropdown.value =="IMDB")
+            {return 4*Math.pow(d,.5);}
+    else if(zdropdown.value == "NONE")
+            {return 0;}})
+
+
+
+
+ //Creating a custom tip element for the hovering on the bubbles
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {formattedValues(d);
+        return "<strong>Movie Name:</strong> <span style='color:red'>" + d[0] + " </span> <br/>"
+            +  "<strong>Franchise:</strong> <span style='color:red'>" + d[1] + " </span> <br/>"
+            +  "<strong>"+hoverx+":</strong> <span style='color:red'>" + xvalue + " </span> <br/>"
+            +  "<strong>"+hovery+":</strong> <span style='color:red'>" + yvalue + " </span> <br/>"
+             +  "<strong>"+hoverz+":</strong> <span style='color:red'>" + zvalue + " </span> <br/>";
+      })
+      svg.call(tip);
+  
+
+
+
+
+
+
+// Create Circles
+svg.selectAll("circle")
+    .data(MoviePoints)
+    .enter()
+    .append("circle")  // Add circle svg
+     .attr("cx", function(d) {
+        if ( (d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection =="ADJUSTED") &(zselection == "BUDGET")){
+        return xScale(d[2])-5;  // Circle's X
+        }
+        else { return xScale(d[2]);}
+        })
+    .attr("cy", function(d) {  // Circle's Y
+        return yScale(d[3]);
+        })
+    .attr("r", function(d){
+        if(zdropdown.value =="Rotten_Tomatoes")
+            {return Math.pow(d[4],.5);}
+        else if(zdropdown.value =="ADJBUDGET")
+            {return .0007*Math.pow(d[4],.5);}
+        else if(zdropdown.value =="ADJUSTED")
+            {return .0004*Math.pow(d[4],.5);}
+        else if(zdropdown.value =="IMDB")
+            {return 4*Math.pow(d[4],.5);}
+        else if(zdropdown.value == "NONE")
+            {return 5}})
+    .style("fill", function(d){
+        if (d[1] == "DC"){
+            return "blue";}
+            else {return "red";}})
+    .style("opacity",.6)
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);  // radius
+
+   /* //Create Circle Scale Legend
+    d3.select("svg").append("circle").attr("cx", canvas_width - padding/5).attr("cy", canvas_height/2).attr("r", if(zdropdown.value =="Rotten_Tomatoes")
+            {return .1*10}
+        else if(zdropdown.value =="BUDGET")
+            {return .0007*Math.pow(10000000,.52)}
+        else if(zdropdown)*/
+
+// Add X axis
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + (canvas_height - padding) +")")
+    .call(xAxis);
+
+// Add Y axis
+svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(" + padding +",0)")
+    .call(yAxis);
 
 
   </script>
