@@ -11,7 +11,7 @@
  
 
     <style type="text/css">
-    svg{  margin: 10px
+    svg{  margin: 10px;
 
     }
 
@@ -30,25 +30,44 @@
 
  
 <body>
-    
-<div id ="photo"></div>
+   
+<div id ="photo0"></div>
+<div id ="photo1"></div>
 
 <script>
-     function gethero(moviestr){
+
+     function gethero(moviearr){
         d3.selectAll(".character").remove();
         height=300;
         width=300;
         padding=20;
-        cha=movie[moviestr].Characters;
-        company=movie[moviestr].COMPANY;
-        for (var i = 0; i< cha.length;i++){
-            name=cha[i]
-            appearance=character[cha[i]].APPEARANCES
-            image=character[cha[i]].pic
-            year=character[cha[i]].Year
-            
+        for (m=0;m<moviearr.length;m++){
+        film=moviearr[m]
+        cha=movie[film].Characters;
+        company=movie[film].COMPANY;
 
-            var svg=d3.select("#photo")
+        for (var i = 0; i< cha.length;i++){
+            name=cha[i];
+            appearance=character[cha[i]].APPEARANCES;
+            image=character[cha[i]].pic;
+            more=[];
+        for (var j in movie){
+            // console.log(j);
+            // console.log(movie[j]);
+            // console.log(movie[j].Characters)
+
+            if(movie[j].Characters.indexOf(name) != -1) {
+                
+                revenue= movie[j].ADJUSTED;
+                each={film:j,revenue:revenue};
+                more.push(each)
+            }
+        
+        }
+
+        console.log(m);
+         console.log(d3.select("#photo"+m));
+            var svg=d3.select("#photo"+m)
             // .attr("class","character")
             .append("svg")
             .attr("class","character")
@@ -60,32 +79,50 @@
             area.enter()
             .append("svg:image")
             .attr("class","image")
-            .attr("x",75)
+            .attr("x",35)
             .attr("y",20)
             .attr("width",150)
             .attr("height",150)
-            .attr("xlink:href",image);
-
+            .attr("xlink:href",image)
+            .attr("opacity",0.9);
+ 
             svg.append("text")
-            .attr("x",75)
+            .attr("x",35)
             .attr("y",200)
             .text("Name: "+name);
 
-            svg.append("text")
-            .attr("x",75)
-            .attr("y",220)
-            .text("Year: "+year);
-
             lScale=d3.scale.linear().domain([0,4050]).range([0,150]);
 
-            svg.append("rect")
-            .attr("x", 75)
-            .attr("y", 240)
-            .attr("width", lScale(appearance))
-            .attr("height",20)
-            .style("fill",function(){if(company=="DC"){return "blue";} else{ return "red"}})
-            .style("opacity",0.6)
-        ;
+            svg.append("text")
+            .attr("x",35)
+            .attr("y",220)
+            .text("Appearances in comic: "+appearance+" times");
+
+            svg.append("text")
+            .attr("x",35)
+            .attr("y",240)
+            .text("Appearances in movie: "+more.length+" times");
+
+            for (k=0;k<more.length;k++){
+                svg.append("text")
+            .attr("x",35)
+            .attr("y",260+k*20)
+            .text(more[k].film+": $"+more[k].revenue);
+
+
+            }
+            }
+            
+
+
+            // svg.append("rect")
+            // .attr("x", 35)
+            // .attr("y", 240)
+            // .attr("width", lScale(appearance))
+            // .attr("height",20)
+            // .style("fill",function(){if(company=="DC"){return "blue";} else{ return "red"}})
+            // .style("opacity",0.6)
+        
 
 
 
@@ -96,9 +133,11 @@
          
          }
          
-         gethero("Superman II")
-         gethero("Supergirl")
-         gethero("Superman II")
+
+     
+         gethero(["Superman II","Superman II"])
+         gethero(["Superman II","Supergirl"])
+         
 
  
 </script>

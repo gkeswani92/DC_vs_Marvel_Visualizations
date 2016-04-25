@@ -2,6 +2,14 @@ var movie={
   "Superman II": {
     "COMPANY":"DC",
     "RELEASE":1980,
+    "ADJUSTED":100000,
+    "Characters":["Superman","Captain America"]
+    
+  },
+    "Superman III": {
+    "COMPANY":"DC",
+    "RELEASE":2010,
+    "ADJUSTED":20000,
     "Characters":["Superman"]
     
   },
