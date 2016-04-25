@@ -1,29 +1,28 @@
 var character={
   "Superman": {
     "APPEARANCES":2496,
-    "Ajuested",
-    "pic":"image/dc/superman.jpg" 
+    "pic":"image/superman.jpg" 
     
   },
   "Super Girl": {
     "APPEARANCES":3,
-    "pic":"image/dc/supergirl.jpg"
+    "pic":"image/supergirl.jpg"
   },
   "Swamp Thing": {
     "APPEARANCES":309,
-    "pic":"image/dc/swamp.jpg"
+    "pic":"image/swamp.jpg"
   },
   "Captain America": {
     "APPEARANCES":3360,
-    "pic":"image/marvel/captainamerica.jpg"
+    "pic":"image/captainamerica.jpg"
   },
   "Red Skull": {
-    "APPEARANCES":10,
-    "pic":"image/marvel/redskull.jpg"
+    "APPEARANCES":986,
+    "pic":"image/redskull.jpg"
   },
   "Iron Man":{
     "APPEARANCES":2961,
-    "pic":""
+    "pic":"image/ironman.jpg"
   },
   "Hulk":{
     "APPEARANCES":1962,
@@ -166,22 +165,14 @@ var character={
     "pic":""
   },
 
-"Allan Quatermain":{
-    "APPEARANCES":10,
-    "pic":""
-  },
+
 "Captain Nemo":{
     "APPEARANCES":3,
     "pic":""
   },
-// "Mina Harker":{
+"Mina Harker":{
    
-//   },
-// "Rodney Skinner"
-// "Dorian Gray"
-// "Tom Sawer"
-// "Dr. Jekyll"
-
+  },
 "Nighcrawler":{
     "APPEARANCES":1047,
     "pic":""
@@ -191,23 +182,15 @@ var character={
     "APPEARANCES":3,
     "pic":""
   },
-
-
-// "Abraham Whistler"
-// "Drake"
-
 "Doctor Octopus":{
     "APPEARANCES":526,
     "pic":""
   },
 
-
-
 "Kirigi":{
     "APPEARANCES":6,
     "pic":""
   },
-// "Roshi"
 "Stick":{
     "APPEARANCES":10,
     "pic":""
@@ -225,7 +208,6 @@ var character={
     "APPEARANCES":371,
     "pic":""
   },
-// Gabriel
 "Balthazar":{
     "APPEARANCES":9,
     "pic":""
@@ -246,105 +228,144 @@ var character={
 "The Thing":{
     "APPEARANCES":2255,
     "pic":""
-  }
-// Doctor Doom
+  },
+"Doctor Doom":{
+  "APPEARANCES":1000,
+    "pic":""},
 
-// Ra's al Ghul
-// Scarecrow
+"Ra's al Ghul":{
+  "APPEARANCES":560,
+    "pic":""},
+"Scarecrow":{
+  "APPEARANCES":10,
+    "pic":""},
 
-// Lex Luthor
-
-// Rogue
-// Beast
-// Juggernaut
-// Colossus
-// Iceman
-// Pyro
-
-// Silver Surfer
-
-// New Goblin
-// Sandman
-// Venom
-
-
-// Abomination
-
-// Rorschach
-// Nite Owl
-// Dr. Manhattan
-// Silk Spectre
-// The Comedian
-// Ozymandias
-
-// Sabretooth
-// Kayla Silverfox
-// The Blob
-// Gambit
-// Agent Zero
+"Lex Luthor":{
+  "APPEARANCES":677,
+    "pic":""},
 
 
 
+"Colossus":{
+  "APPEARANCES":1162,
+    "pic":""},
+"Iceman":{
+  "APPEARANCES":1265,
+    "pic":""},
+Pyro:{
+  "APPEARANCES":108,
+    "pic":""},
 
-// Lt. Col. Franklin Clay
-// Aisha al-Fadhil
-// Cpt. Jake Jensen
+"Venom":{
+  "APPEARANCES":348,
+    "pic":""},
+
+
+"Abomination":{
+  "APPEARANCES":115,
+    "pic":""},
 
 
 
 
 
+"Silk Spectre":{
+  "APPEARANCES":49,
+    "pic":""},
+
+"Ozymandias":{
+  "APPEARANCES":36,
+    "pic":""},
+
+"Sabretooth":{
+  "APPEARANCES":382,
+    "pic":""},
+
+"The Blob":{
+  "APPEARANCES":194,
+    "pic":""},
+"Gambit":{
+  "APPEARANCES":636,
+    "pic":""},
+"Agent Zero":{
+  "APPEARANCES":6,
+    "pic":""},
+
+
+"Cpt. Jake Jensen":{
+  "APPEARANCES":8,
+    "pic":""},
+
+"General Zod":{
+  "APPEARANCES":500,
+    "pic":""},
+"Jonah Hex":{
+  "APPEARANCES":291,
+    "pic":""},
+"Quentin Turnbull":{
+  "APPEARANCES":21,
+    "pic":""},
+"Peter Quill":{
+  "APPEARANCES":119,
+    "pic":""},
+"Gamora":{
+  "APPEARANCES":218,
+    "pic":""},
+"Drax":{
+  "APPEARANCES":264,
+    "pic":""},
+
+"Rocket Raccoon":{
+  "APPEARANCES":120,
+    "pic":""},
+
+"Nebula":{
+  "APPEARANCES":56,
+    "pic":""},
+"Winter Soldier":{
+  "APPEARANCES":1603,
+    "pic":""},
+"Loki":{
+  "APPEARANCES":1500,
+    "pic":""},
+
+"Emma Frost":{
+  "APPEARANCES":880,
+    "pic":""},
+"Sebastian Shaw":{
+  "APPEARANCES":174,
+    "pic":""},
+"Havok":{
+  "APPEARANCES":558,
+    "pic":""},
 
 
 
+"Kick-Ass":{
+  "APPEARANCES":54,
+    "pic":""},
+"Hit-Girl":{
+  "APPEARANCES":48,
+    "pic":""},
+"Big Daddy":{
+  "APPEARANCES":10,
+    "pic":""},
+"Red Mist":{
+  "APPEARANCES":15,
+    "pic":""},
 
 
 
-// ------------DC---------------
-// General Zod
-// Jonah Hex
-// Quentin Turnbull
-// -------------Marvel------------
-// Peter Quill
-// Gamora
-// Drax
-// Ronan the Accuser
-// Rocket Raccoon
-// Yondu
-// Nebula
+"Green Lantern":{
+  "APPEARANCES":1565,
+    "pic":""},
+"Dr. Hector Hammond":{
+  "APPEARANCES":78,
+    "pic":""},
 
-// Electro
-// Rhino
-
-// Winter Soldier
-// Falcon
-
-// Blade
-
-// Iron Patriot
-// Aldrich Killian
-
-// Red Skull
-
-// Loki
-
-// Emma Frost
-// Sebastian Shaw
-// Havok
-// Darwin
-
-
-// Kick-Ass
-// Hit-Girl
-// Big Daddy
-// Red Mist
-
-// Ivan Vanko
-
-// Green Lantern
-// Dr. Hector Hammond
-
-// Deadpool
+"Deadpool":{
+  "APPEARANCES":500,
+    "pic":""},
 
 
 }  
