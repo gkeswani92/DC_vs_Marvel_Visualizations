@@ -58,6 +58,7 @@
             <option value="ADJUSTED" >Revenue</option>
         </select>
     </h3>
+
       
 
     <h3 id = "yScales">Select Y Scale 
@@ -86,8 +87,7 @@
     </div> 
 
     <div id = "SizeLegend"> 
-    	<svg id = "Legend"> 
-    	</svg>
+
     </div>
 
     <h3 id = "Scatter"></h3>
@@ -147,6 +147,74 @@ var Maxx = maxRelease + .05*ReleaseRange;
 var Miny = 0;
 var Maxy = 1.05*maxAdjusted
 
+//Max for size doain (initialize to adjusted budget)
+var Maxz = maxBudget;
+
+//MAKE size scale legend
+ThreeValues = [];
+var setLegendValues = function(){
+    var factor = .1;
+    for (var i = 0; i<3; i++){
+        ThreeValues[i] = factor*Maxz;
+        factor = factor + .4;
+    }
+}
+
+
+
+////Set hover titles corresonding to selection
+var hoverx;
+var hovery;
+var hoverz;
+var setHoverValues = function()
+{
+if(xselection == "Rotten_Tomatoes"){
+            hoverx = "Rotten Tomatoes Score";
+            }
+        else if(xselection == "ADJBUDGET"){
+            hoverx = "Adjusted Budget";
+            }
+        else if(xselection == "RELEASE"){
+            hoverx ="Release Year";
+         }
+     	else if(xselection == "IMDB"){
+     		hoverx ="IMDB Score";
+     	}
+     	else{
+     		hoverx = "Adjusted Revenue";}
+
+
+
+     	if(yselection == "Rotten_Tomatoes"){
+            hovery = "Rotten Tomatoes Score";
+            }
+        else if(yselection == "ADJBUDGET"){
+            hovery = "Adjusted Budget";
+            }
+     	else if(yselection == "IMDB"){
+     		hovery ="IMDB Score";
+     	}
+     	else{hovery = "Adjusted Revenue";}
+
+
+
+     	if(zselection == "Rotten_Tomatoes"){
+            hoverz = "Rotten Tomatoes Score";
+            }
+        else if(zselection == "ADJBUDGET"){
+            hoverz = "Adjusted Budget";
+            }
+        else if(zselection == "IMDB"){
+            hoverz ="IMDB Score";
+         }
+     	else if(zselection == "ADJUSTED"){
+     		hoverz = "Adjusted Revenue";}
+
+}
+
+
+
+
 
 //create array of points to display
 var LoadData = function(s1, s2, s3) {
@@ -159,7 +227,7 @@ var LoadData = function(s1, s2, s3) {
     return MoviePoints;
 }
 
-
+var EaseOptions = ["sine", "elastic", "linear", "quad", "cubic", "bounce"]
 
 ///Update Scatterplot after selection
  var update = function(movies){
@@ -168,7 +236,7 @@ var LoadData = function(s1, s2, s3) {
     yScale.domain([Miny, Maxy]);
 
     // Update circles
-    svg.selectAll("circle")
+    svg.selectAll("#point")
         .data(MoviePoints)  // Update with new data
         .transition()  // Transition from old to new
         .duration(1000)  // Length of animation
@@ -180,7 +248,8 @@ var LoadData = function(s1, s2, s3) {
         .delay(function(d, i) {
             return i / movies.length * 500;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .ease("linear")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .ease(
+        "cubic")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("cx", function(d) {
             return xScale(d[2]);  // Circle's X
         })
@@ -194,11 +263,11 @@ var LoadData = function(s1, s2, s3) {
                 //.attr("fill", "black")  // Change color
                 .attr("r", function(d){
             if(zdropdown.value =="Rotten_Tomatoes")
-            {return Math.pow(d[4],.5);}
+            {return 1.2*Math.pow(d[4],.5);}
         else if(zdropdown.value =="ADJBUDGET")
             {return .0007*Math.pow(d[4],.5);}
         else if(zdropdown.value =="ADJUSTED")
-            {return .0004*Math.pow(d[4],.5);}
+            {return .00033*Math.pow(d[4],.5);}
         else if(zdropdown.value =="IMDB")
             {return 4*Math.pow(d[4],.5);}
         else if(zdropdown.value == "NONE")
@@ -213,11 +282,87 @@ var LoadData = function(s1, s2, s3) {
         // Update Y Axis
         svg.select(".y.axis")
             .transition()
-            .duration(100)
+            .duration(1000)
             .call(yAxis);
 }
 )
 }
+
+//Set initial hover titles
+setHoverValues();
+
+
+//Draw Legend
+var drawlegend = function(){
+    if (zselection == "NONE"){
+        d3.selectAll("#LegCircle").remove();
+        d3.select("#LegTitle").remove();
+        d3.selectAll("#LegLabel").remove();
+        return;
+    }
+
+	d3.selectAll("#LegCircle").remove();
+
+	setLegendValues();
+
+	d3.select("svg").selectAll("#LegCircle").data(ThreeValues).enter().append("circle").attr("id", "LegCircle").attr("cx", canvas_width - 1.8*padding).attr("cy", function(d,i) {
+	var yloc = .497*canvas_height;
+	return yloc + i*40;
+
+}).attr("r", function(d){
+	console.log(d)
+	if(zdropdown.value =="Rotten_Tomatoes")
+            {return 1.2*Math.pow(d,.5);}
+    else if(zdropdown.value =="ADJBUDGET")
+            {return .0007*Math.pow(d,.5);}
+    else if(zdropdown.value =="ADJUSTED")
+            {
+            console.log("hi")
+            return .00033*Math.pow(d,.5);}
+    else if(zdropdown.value =="IMDB")
+            {return 4*Math.pow(d,.5);}
+    else if(zdropdown.value == "NONE")
+            {return 0;}
+    }).attr("fill", "#800080").attr("opacity",.7);
+
+
+
+	
+	var legLabelLoc = .507*canvas_height
+
+//Remove previous legend labels if they exist
+d3.selectAll("#LegLabel").remove();
+
+//Create new labels
+	for (var j = 0; j< 3; j++){
+		console.log(j)
+	
+console.log(legLabelLoc);
+
+	d3.select("svg").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
+		.attr("transform", "translate("+  (canvas_width - 1.6*padding) +","+legLabelLoc+")")  // centre below axis
+    .text( function(){
+
+if((zselection == "ADJUSTED") | (zselection == "ADJBUDGET")){
+           return "$"+(1000000*Math.round((ThreeValues[j])/1000000)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        else{return ThreeValues[j]}
+    }
+)
+
+    legLabelLoc = legLabelLoc + 40;
+}
+
+d3.select("#LegTitle").remove();
+d3.select("svg").append("text").attr("id","LegTitle").attr("text-anchor", "left")
+.attr("transform", "translate("+ (canvas_width - 1.8*padding) + "," + .47*canvas_height+")").text(hoverz).attr("font-size", 22);
+
+
+}
+
+
+
+
 
 
 
@@ -304,6 +449,7 @@ var updatez = function(){
      update(MoviePoints);
      titleupdate();
      setHoverValues();
+     drawlegend();
 }
 
 
@@ -345,11 +491,12 @@ var yAxis = d3.svg.axis()
         else{return d;}
     });
 
-// Create SVG element
+// Create SVG element For Plot
 var svg = d3.select("#Scatter")  // This is where we put our vis
     .append("svg")
     .attr("width", canvas_width)
     .attr("height", canvas_height)
+
 
 //Add Axis Labels
 var xlabupdate = function(){
@@ -397,6 +544,7 @@ var ylabupdate = function(){
             return "Adjusted Budget";
             }
      	else if(yselection == "IMDB"){
+
      		 return "IMDB Score";
      	}
      	else if(yselection == "ADJUSTED"){
@@ -459,56 +607,7 @@ var titleupdate = function(){
 
 
 
-var hoverx;
-var hovery;
-var hoverz;
-var setHoverValues = function()
-{
-if(xselection == "Rotten_Tomatoes"){
-            hoverx = "Rotten Tomatoes Score";
-            }
-        else if(xselection == "ADJBUDGET"){
-            hoverx = "Adjusted Budget";
-            }
-        else if(xselection == "RELEASE"){
-            hoverx ="Release Year";
-         }
-     	else if(xselection == "IMDB"){
-     		hoverx ="IMDB Score";
-     	}
-     	else{
-     		hoverx = "Adjusted Revenue";}
 
-
-
-     	if(yselection == "Rotten_Tomatoes"){
-            hovery = "Rotten Tomatoes Score";
-            }
-        else if(yselection == "ADJBUDGET"){
-            hovery = "Adjusted Budget";
-            }
-     	else if(yselection == "IMDB"){
-     		hovery ="IMDB Score";
-     	}
-     	else{hovery = "Adjusted Revenue";}
-
-
-
-     	if(zselection == "Rotten_Tomatoes"){
-            hoverz = "Rotten Tomatoes Score";
-            }
-        else if(zselection == "ADJBUDGET"){
-            hoverz = "Adjusted Budget";
-            }
-        else if(zselection == "IMDB"){
-            hoverz ="IMDB Score";
-         }
-     	else if(zselection == "ADJUSTED"){
-     		hoverz = "Adjusted Revenue";}
-
-
-
-}
 var xvalue;
 var yvalue;
 var zvalue;
@@ -534,18 +633,6 @@ var formattedValues = function(point){
 
 
 
-//MAKE size sale legend
-ThreeValues = [];
-
-var setLegendValues = function(){
-	var factor = .1;
-	for (var i = 0; i<3; i++){
-		ThreeValues[i] = factor*Maxz;
-		factor = factor + .4;
-	}
-}
-
-
 
 //Load Initial Data
 MoviePoints = LoadData(xselection,yselection,zselection);
@@ -556,35 +643,16 @@ xlabupdate();
 //Set intial y labels
 ylabupdate();
 
-//Set Initial size scale
+//Set Initial size scale and legend
 updatez();
 setLegendValues();
+drawlegend()
 
 //Set initial title
 titleupdate();
 
-//Set initial hover titles
-setHoverValues();
-
-//Set initial legend
 
 
-
-
-//Draw Legend
-d3.select("#Legend").selectAll("circle").data(ThreeValues).enter().append("circle").attr("cx", 0).attr("cy", 0).attr("r", function(d){
-	if(zdropdown.value =="Rotten_Tomatoes")
-            {return Math.pow(d,.5);}
-    else if(zdropdown.value =="ADJBUDGET")
-            {return .0007*Math.pow(d,.5);}
-    else if(zdropdown.value =="ADJUSTED")
-            {
-            console.log("hi")
-            return .0004*Math.pow(d,.5);}
-    else if(zdropdown.value =="IMDB")
-            {return 4*Math.pow(d,.5);}
-    else if(zdropdown.value == "NONE")
-            {return 0;}})
 
 
 
@@ -609,12 +677,12 @@ d3.select("#Legend").selectAll("circle").data(ThreeValues).enter().append("circl
 
 
 // Create Circles
-svg.selectAll("circle")
+d3.select("svg").selectAll("#point")
     .data(MoviePoints)
     .enter()
     .append("circle")  // Add circle svg
-     .attr("cx", function(d) {
-        if ( (d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection =="ADJUSTED") &(zselection == "BUDGET")){
+    .attr("id","point").attr("cx", function(d) {
+        if ( (d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection =="ADJUSTED") &(zselection == "ADJBUDGET")){
         return xScale(d[2])-5;  // Circle's X
         }
         else { return xScale(d[2]);}
@@ -624,11 +692,11 @@ svg.selectAll("circle")
         })
     .attr("r", function(d){
         if(zdropdown.value =="Rotten_Tomatoes")
-            {return Math.pow(d[4],.5);}
+            {return 1.2*Math.pow(d[4],.5);}
         else if(zdropdown.value =="ADJBUDGET")
             {return .0007*Math.pow(d[4],.5);}
         else if(zdropdown.value =="ADJUSTED")
-            {return .0004*Math.pow(d[4],.5);}
+            {return .00033*Math.pow(d[4],.5);}
         else if(zdropdown.value =="IMDB")
             {return 4*Math.pow(d[4],.5);}
         else if(zdropdown.value == "NONE")
