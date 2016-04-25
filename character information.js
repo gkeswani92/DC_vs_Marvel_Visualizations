@@ -340,7 +340,21 @@ var character={
     "pic":"image/falcon.jpg"},
      "Hawkeye":{
   "APPEARANCES":1394,
-    "pic":"image/hawkeye.jpg"}
-
+    "pic":"image/hawkeye.jpg"},
+"Ghost Rider":{
+  "APPEARANCES":426,
+    "pic":"image/ghostrider.jpg"},
+"The Spirit":{
+  "APPEARANCES":400,
+    "pic":"image/Spirit.jpg"},
+"Franklin Clay":{
+  "APPEARANCES":40,
+    "pic":"image/clay.jpg"},
+"Quicksilver":{
+  "APPEARANCES":740,
+    "pic":"image/quick.jpg"},
+"Scarlet Witch":{
+  "APPEARANCES":1161,
+    "pic":"image/red.jpg"},
 
 }  
