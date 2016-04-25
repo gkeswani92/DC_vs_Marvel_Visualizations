@@ -26,346 +26,321 @@ var character={
   },
   "Hulk":{
     "APPEARANCES":1962,
-    "pic":""
+    "pic":"image/hulk.jpg"
   },
   "Thor":{
     "APPEARANCES":2258,
-    "pic":""
+    "pic":"image/thor.jpg"
   },
   "Black Widow":{
     "APPEARANCES":1050,
-    "pic":""
+    "pic":"image/blackw.jpg"
   },
   "Batman":{
     "APPEARANCES":3093,
-    "pic":""
+    "pic":"image/batman.jpg"
   },
   "The Joker":{
     "APPEARANCES":517,
-    "pic":""
+    "pic":"image/joker.jpg"
   },
   "Spider-Man":{
     "APPEARANCES":4043,
-    "pic":""
+    "pic":"image/spider.jpg"
   },
   "Deadppol":{
     "APPEARANCES":500,
-    "pic":""
+    "pic":"image/deadpool.jpg"
   },
   "Wolverine":{
     "APPEARANCES":3061,
-    "pic":""
+    "pic":"image/wolverine.jpg"
   },
   "Charles Xavier":{
     "APPEARANCES":1233,
-    "pic":""
+    "pic":"image/Charles_Xavier.png"
   },
 
   "Storm":{
     "APPEARANCES":1512,
-    "pic":""
+    "pic":"image/storm.jpg"
   },
   "Beast":{
     "APPEARANCES":1825,
-    "pic":""
+    "pic":"image/beast.jpg"
   },
   "Howard The Duck":{
     "APPEARANCES":350,
-    "pic":""
+    "pic":"image/duck.jpg"
   },
   "Rogue":{
     "APPEARANCES":850,
-    "pic":""
+    "pic":"image/rogue.jpg"
   },
   "The Punisher":{
     "APPEARANCES":9,
-    "pic":""
+    "pic":"image/punisher.jpg"
   },
 
 "Penguin":{
     "APPEARANCES":1081,
-    "pic":""
+    "pic":"image/penguin.jpg"
   },
 "Catwoman":{
     "APPEARANCES":1868,
-    "pic":""
+    "pic":"image/catwoman.jpg"
   },
 
 "Steel":{
     "APPEARANCES":345,
-    "pic":""
+    "pic":"image/steel.jpg"
   },
 
 "Robin":{
     "APPEARANCES":464,
-    "pic":""
+    "pic":"image/robin.jpg"
   },
 "Mr.Freeze":{
     "APPEARANCES":569,
-    "pic":""
+    "pic":"image/mrfreeze.jpg"
   },
 "Batgirl":{
     "APPEARANCES":951,
-    "pic":""
+    "pic":"image/batgirl.jpg"
   },
 "Poison Ivy":{
     "APPEARANCES":286,
-    "pic":""
+    "pic":"image/poisonivy.jpg"
   },
 
 "Magneto":{
     "APPEARANCES":709,
-    "pic":""
+    "pic":"image/Magneto.jpg"
   },
 "Jean Grey":{
     "APPEARANCES":1107,
-    "pic":""
+    "pic":"image/jeangrey.png"
   },
 
 "Cyclops":{
     "APPEARANCES":1955,
-    "pic":""
+    "pic":"image/cyclops.jpg"
   },
-
 
 "Mystique":{
     "APPEARANCES":2149,
-    "pic":""
+    "pic":"image/mystique.jpg"
   },
 
 "Blade":{
     "APPEARANCES":194,
-    "pic":""
+    "pic":"image/blade.jpg"
   },
 
 "Two-Face":{
     "APPEARANCES":941,
-    "pic":""
+    "pic":"image/twoface.jpg"
   },
 "The Riddler":{
     "APPEARANCES":776,
-    "pic":""
+    "pic":"image/riddler.jpg"
   },
 
 "Green Goblin":{
     "APPEARANCES":16,
-    "pic":""
+    "pic":"image/greengoblin.jpg"
   },
 
 "Daredevil":{
     "APPEARANCES":3361,
-    "pic":""
+    "pic":"image/daredevil.jpg"
   },
 "Elektra":{
     "APPEARANCES":280,
-    "pic":""
+    "pic":"image/Elektra.jpg"
   },
 "The Kingpin":{
     "APPEARANCES":1191,
-    "pic":""
+    "pic":"image/kingpin.jpg"
   },
-
 
 "Captain Nemo":{
     "APPEARANCES":3,
-    "pic":""
-  },
-"Mina Harker":{
-   
+    "pic":"image/nemo.jpg"
   },
 "Nighcrawler":{
     "APPEARANCES":1047,
-    "pic":""
-  },
-
-"Howard Saint":{
-    "APPEARANCES":3,
-    "pic":""
+    "pic":"image/nightcrawler.jpg"
   },
 "Doctor Octopus":{
     "APPEARANCES":526,
-    "pic":""
+    "pic":"image/octopus.jpg"
   },
 
 "Kirigi":{
     "APPEARANCES":6,
-    "pic":""
+    "pic":"image/kirigi.jpg"
   },
 "Stick":{
     "APPEARANCES":10,
-    "pic":""
+    "pic":"image/stick.jpg"
   },
 "Evey Hammond":{
     "APPEARANCES":32,
-    "pic":""
+    "pic":"image/evey.jpg"
   },
 "V":{
     "APPEARANCES":55,
-    "pic":""
+    "pic":"image/v.jpg"
   },
 
 "John Constantine":{
     "APPEARANCES":371,
-    "pic":""
+    "pic":"image/johncon.jpg"
   },
 "Balthazar":{
     "APPEARANCES":9,
-    "pic":""
+    "pic":"image/bal.jpg"
   },
 
 "Mr. Fantastic":{
     "APPEARANCES":2072,
-    "pic":""
+    "pic":"image/fantastic.jpg"
   },
 "Invisible Woman":{
     "APPEARANCES":1713,
-    "pic":""
+    "pic":"image/invisible.jpg"
   },
 "Human Torch":{
     "APPEARANCES":548,
-    "pic":""
+    "pic":"image/torch.jpg"
   },
 "The Thing":{
     "APPEARANCES":2255,
-    "pic":""
+    "pic":"image/thing.jpg"
   },
 "Doctor Doom":{
   "APPEARANCES":1000,
-    "pic":""},
+    "pic":"image/doom.jpg"},
 
 "Ra's al Ghul":{
   "APPEARANCES":560,
-    "pic":""},
+    "pic":"image/ghul.jpg"},
 "Scarecrow":{
   "APPEARANCES":10,
-    "pic":""},
+    "pic":"image/Scarecrow.jpg"},
 
 "Lex Luthor":{
   "APPEARANCES":677,
-    "pic":""},
-
-
-
+    "pic":"image/lexluthor.jpg"},
 "Colossus":{
   "APPEARANCES":1162,
-    "pic":""},
+    "pic":"image/Colossus.jpg"},
 "Iceman":{
   "APPEARANCES":1265,
-    "pic":""},
-Pyro:{
+    "pic":"image/iceman.jpg"},
+"Pyro":{
   "APPEARANCES":108,
-    "pic":""},
+    "pic":"image/pyro.jpg"},
 
 "Venom":{
   "APPEARANCES":348,
-    "pic":""},
-
+    "pic":"image/venom.jpg"},
 
 "Abomination":{
   "APPEARANCES":115,
-    "pic":""},
-
-
-
-
-
+    "pic":"image/Abomination.jpg"},
 "Silk Spectre":{
   "APPEARANCES":49,
-    "pic":""},
+    "pic":"image/Silk.jpg"},
 
 "Ozymandias":{
   "APPEARANCES":36,
-    "pic":""},
+    "pic":"image/Ozymandias.jpg"},
 
 "Sabretooth":{
   "APPEARANCES":382,
-    "pic":""},
+    "pic":"image/Sabretooth.jpg"},
 
 "The Blob":{
   "APPEARANCES":194,
-    "pic":""},
+    "pic":"image/blob.jpg"},
 "Gambit":{
   "APPEARANCES":636,
-    "pic":""},
+    "pic":"image/Gambit.jpg"},
 "Agent Zero":{
   "APPEARANCES":6,
-    "pic":""},
-
-
-"Cpt. Jake Jensen":{
-  "APPEARANCES":8,
-    "pic":""},
+    "pic":"image/Agent0.jpg"},
 
 "General Zod":{
   "APPEARANCES":500,
-    "pic":""},
+    "pic":"image/General Zod.png"},
 "Jonah Hex":{
   "APPEARANCES":291,
-    "pic":""},
+    "pic":"image/hex.jpg"},
 "Quentin Turnbull":{
   "APPEARANCES":21,
-    "pic":""},
+    "pic":"image/Quentin.jpg"},
 "Peter Quill":{
   "APPEARANCES":119,
-    "pic":""},
+    "pic":"image/peter.jpg"},
 "Gamora":{
   "APPEARANCES":218,
-    "pic":""},
+    "pic":"image/Gamora.jpg"},
 "Drax":{
   "APPEARANCES":264,
-    "pic":""},
+    "pic":"image/Drax.jpg"},
 
 "Rocket Raccoon":{
   "APPEARANCES":120,
-    "pic":""},
+    "pic":"image/Rocket Raccoon.jpg"},
 
 "Nebula":{
   "APPEARANCES":56,
-    "pic":""},
+    "pic":"image/Nebula.jpg"},
 "Winter Soldier":{
   "APPEARANCES":1603,
-    "pic":""},
+    "pic":"image/bucky.jpg"},
 "Loki":{
   "APPEARANCES":1500,
-    "pic":""},
+    "pic":"image/loki.jpg"},
 
 "Emma Frost":{
   "APPEARANCES":880,
-    "pic":""},
+    "pic":"image/frost.jpg"},
 "Sebastian Shaw":{
   "APPEARANCES":174,
-    "pic":""},
+    "pic":"image/shaw.jpg"},
 "Havok":{
   "APPEARANCES":558,
-    "pic":""},
-
-
-
+    "pic":"image/havok.jpg"},
 "Kick-Ass":{
   "APPEARANCES":54,
-    "pic":""},
+    "pic":"image/kick.jpg"},
 "Hit-Girl":{
   "APPEARANCES":48,
-    "pic":""},
+    "pic":"image/hit.jpg"},
 "Big Daddy":{
   "APPEARANCES":10,
-    "pic":""},
+    "pic":"image/Big Daddy.jpg"},
 "Red Mist":{
   "APPEARANCES":15,
-    "pic":""},
-
-
-
+    "pic":"image/redmist.jpg"},
 "Green Lantern":{
   "APPEARANCES":1565,
-    "pic":""},
+    "pic":"image/Green Lantern.jpg"},
 "Dr. Hector Hammond":{
   "APPEARANCES":78,
-    "pic":""},
-
-"Deadpool":{
-  "APPEARANCES":500,
-    "pic":""},
+    "pic":"image/hector.jpg"},
+"Ant-Man":{
+  "APPEARANCES":209,
+    "pic":"image/ant.jpg"},
+    "Falcon":{
+  "APPEARANCES":512,
+    "pic":"image/falcon.jpg"},
+     "Hawkeye":{
+  "APPEARANCES":1394,
+    "pic":"image/hawkeye.jpg"}
 
 
 }  
