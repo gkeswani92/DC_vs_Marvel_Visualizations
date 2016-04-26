@@ -208,14 +208,12 @@ var drawlegend = function(){
 	return yloc + i*40;
 
 }).attr("r", function(d){
-	console.log(d)
 	if(zdropdown.value =="Rotten_Tomatoes")
           {return 1.2*Math.pow(d,.5);}
   else if(zdropdown.value =="ADJBUDGET")
           {return .0007*Math.pow(d,.5);}
   else if(zdropdown.value =="ADJUSTED")
           {
-          console.log("hi")
           return .00033*Math.pow(d,.5);}
   else if(zdropdown.value =="IMDB")
           {return 4*Math.pow(d,.5);}
@@ -233,9 +231,6 @@ d3.selectAll("#LegLabel").remove();
 
 //Create new labels
 	for (var j = 0; j< 3; j++){
-		console.log(j)
-
-console.log(legLabelLoc);
 
 	d3.select("svg").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
 		.attr("transform", "translate("+  (canvas_width - 1.6*padding) +","+legLabelLoc+")")  // centre below axis
@@ -403,7 +398,6 @@ var xlabupdate = function(){
   .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
   .attr("transform", "translate("+ (3*canvas_width/7) +","+(canvas_height-(.7*padding))+")")  // centre below axis
   .text(function(){
-  console.log(xselection);
       if(xselection == "Rotten_Tomatoes"){
           return "Rotten Tomatoes Score";
           }
@@ -434,7 +428,6 @@ var ylabupdate = function(){
           }
       else {return "translate("+padding/2.7+","+(canvas_height/2)+") rotate(-90)";}})
   .text(function(){
-  console.log(yselection);
       if(yselection == "Rotten_Tomatoes"){
           return "Rotten Tomatoes Score";
           }
@@ -451,12 +444,10 @@ var ylabupdate = function(){
 }
 
 
-var first
-var second
+var first;
+var second;
 var maketitle = function(){
-console.log(yselection)
-console.log(xselection)
-var first
+var first;
 
   	 if(yselection == "Rotten_Tomatoes"){
           first = "Rotten Tomatoes Score";
@@ -574,17 +565,18 @@ titleupdate();
 
 var selections = {"DC":null, "Marvel":null};
 var char={"DC":null, "Marvel":null};
-console.log(MoviePoints)
+
 // Create Circles
 d3.select("svg").selectAll("#point")
   .data(MoviePoints)
   .enter()
   .append("circle")  // Add circle svg
   .attr("id","point").attr("cx", function(d) {
-      if ( (d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection =="ADJUSTED") &(zselection == "ADJBUDGET")){
-      return xScale(d[2])-5;  // Circle's X
+      if ((d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection =="ADJUSTED") &(zselection == "ADJBUDGET")){
+          return xScale(d[2])-5;  // Circle's X
       }
-      else { return xScale(d[2]);}
+      else {
+          return xScale(d[2]);}
       })
   .attr("cy", function(d) {  // Circle's Y
       return yScale(d[3]);
@@ -610,8 +602,7 @@ d3.select("svg").selectAll("#point")
   .on("click", function(d) {
       selections[d[1]] = d[0]
       char[d[1]]=d[5]
-      console.log(selections);
-      console.log(char);
+
       if(selections["DC"] != null && selections["Marvel"] != null){
           console.log("Populating world map with comparison data");
           drawBubbles(selections["DC"], selections["Marvel"]);
@@ -622,19 +613,12 @@ d3.select("svg").selectAll("#point")
           gethero([char["DC"]]);
       } else if(selections["Marvel"] != null){
           console.log("Can populate Marvel data or you can select a DC movie to compare");
-          drawBubbles("", selections["Marvel"]);
+          drawBubbles(selections["Marvel"],"");
           gethero([char["Marvel"]]);
       } else {
           console.log("Populating world map with comparison data");
       }
   });
-
- /* //Create Circle Scale Legend
-  d3.select("svg").append("circle").attr("cx", canvas_width - padding/5).attr("cy", canvas_height/2).attr("r", if(zdropdown.value =="Rotten_Tomatoes")
-          {return .1*10}
-      else if(zdropdown.value =="BUDGET")
-          {return .0007*Math.pow(10000000,.52)}
-      else if(zdropdown)*/
 
 // Add X axis
 svg.append("g")

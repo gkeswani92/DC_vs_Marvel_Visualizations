@@ -29,11 +29,8 @@ function drawWorldMap(){
 }
 
 function drawBubbles(movie1, movie2){
-
-    console.log(movieRevenue);
-
     var bubbleData = [];
-    map.bubbles([])
+    map.bubbles([]);
 
     //Collection data for the movies that have been passed in
     for (var movie_name in movieRevenue){
@@ -62,7 +59,7 @@ function drawBubbles(movie1, movie2){
                                     "company":franchise,
                                     "fillKey":franchise,
                                     "film":movie_name,
-                                    radius: revenue * 100 * 2 / total_revenue};
+                                    radius: revenue * 100 * 3 / total_revenue};
                         bubbleData.push(obj);
                     }
                 }
@@ -92,3 +89,4 @@ function drawBubbles(movie1, movie2){
 
 var data = ['country', 'revenue','latitude','longitude'];
 var map = drawWorldMap();
+drawBubbles("The Dark Knight Rises","Iron Man 3");

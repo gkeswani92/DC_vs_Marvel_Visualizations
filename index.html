@@ -5,13 +5,6 @@
 
         <script src="http://d3js.org/d3.v3.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
-        <script src="js/country_locations.js"></script>
-        
-        <script src="js/world_map.js"></script>
-        <script src="js/MoviesDat.js"></script>
-        <script src="js/pushcharacter.js"></script>
-        <script src="character information.js"></script>
-        <script src="js/tip.js"></script>
 
         <link href='style.css' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -27,9 +20,9 @@
             <div id = "ScaleSelection">
                 <h3 id = "xScales">Select X Scale
                     <select id="xdropdown" class="xdropdown" onchange = "updatex()">
-                         <option value="RELEASE" selected = "selected" >Release Year</option>
+                        <option value="RELEASE" selected = "selected" >Release Year</option>
                         <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
-                         <option value="IMDB" >IMDB Score</option>
+                        <option value="IMDB" >IMDB Score</option>
                         <option value="ADJBUDGET" >Budget</option>
                         <option value="ADJUSTED" >Revenue</option>
                     </select>
@@ -38,7 +31,7 @@
                 <h3 id = "yScales">Select Y Scale
                     <select id="ydropdown" class="ydropdown" onchange = "updatey()">
                         <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
-                         <option value="IMDB" >IMDB Score</option>
+                        <option value="IMDB" >IMDB Score</option>
                         <option value="ADJBUDGET">Budget</option>
                         <option value="ADJUSTED" selected = "selected" >Revenue</option>
                     </select>
@@ -47,8 +40,8 @@
                 <h3 id = "zScales">Select Size Scale
                     <select id="zdropdown" class="zdropdown" onchange = "updatez()">
                         <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
-                         <option value="IMDB" >IMDB Score</option>
-                         <option value="ADJUSTED" >Adjusted Revenue</option>
+                        <option value="IMDB" >IMDB Score</option>
+                        <option value="ADJUSTED" >Adjusted Revenue</option>
                         <option value="ADJBUDGET" selected = "selected" >Adjusted Budget</option>
                         <option value="NONE" > None</option>
                     </select>
@@ -61,9 +54,17 @@
 
         <!-- Container for the world map -->
         <div id="container" style=" width: 100%; height: 1000px;"></div>
+
+        <!-- Container for character analysies -->
         <div id ="photo0"></div>
         <div id ="photo1"></div>
 
+        <script src="js/country_locations.js"></script>
+        <script src="js/world_map.js"></script>
+        <script src="js/MoviesDat.js"></script>
+        <script src="js/tip.js"></script>
+        <script src="js/pushcharacter.js"></script>
+        <script src="js/character information.js"></script>
         <script src="js/scatterPlot.js"></script>
         <script src="js/drawBubblesOnMap.js"></script>
     </body>
