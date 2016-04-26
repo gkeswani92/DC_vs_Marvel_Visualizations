@@ -67,39 +67,39 @@ var hovery;
 var hoverz;
 var setHoverValues = function() {
     if (xselection == "Rotten_Tomatoes") {
-        hoverx = "Rotten Tomatoes Score";
+        hoverx = "Rotten Tomatoes";
     } else if (xselection == "ADJBUDGET") {
-        hoverx = "Adjusted Budget";
+        hoverx = "Budget";
     } else if (xselection == "RELEASE") {
         hoverx = "Release Year";
     } else if (xselection == "IMDB") {
         hoverx = "IMDB Score";
     } else {
-        hoverx = "Adjusted Revenue";
+        hoverx = "Revenue";
     }
 
 
 
     if (yselection == "Rotten_Tomatoes") {
-        hovery = "Rotten Tomatoes Score";
+        hovery = "Rotten Tomatoes";
     } else if (yselection == "ADJBUDGET") {
-        hovery = "Adjusted Budget";
+        hovery = "Budget";
     } else if (yselection == "IMDB") {
         hovery = "IMDB Score";
     } else {
-        hovery = "Adjusted Revenue";
+        hovery = "Revenue";
     }
 
 
 
     if (zselection == "Rotten_Tomatoes") {
-        hoverz = "Rotten Tomatoes Score";
+        hoverz = "Rotten Tomatoes";
     } else if (zselection == "ADJBUDGET") {
-        hoverz = "Adjusted Budget";
+        hoverz = "Budget";
     } else if (zselection == "IMDB") {
         hoverz = "IMDB Score";
     } else if (zselection == "ADJUSTED") {
-        hoverz = "Adjusted Revenue";
+        hoverz = "Revenue";
     }
 
 }
@@ -113,9 +113,23 @@ var LoadData = function(s1, s2, s3) {
     var MoviePoints = [];
     for (var i = 0; i < MovieJSON.length; i++) {
         var obj = MovieJSON[i];
-        MoviePoints.push([obj.FILM, obj.COMPANY, Number(obj[s1]), Number(obj[s2]), Number(obj[s3]), obj.Characters])
+        MoviePoints.push([obj.FILM, obj.RELEASE, obj.COMPANY, Number(obj[s1]), Number(obj[s2]), Number(obj[s3]), obj.Characters])
     }
     return MoviePoints;
+}
+
+//Determine which selected scales are unique (for hover display)
+var unique = "";
+var getunique = function(){
+    var xunique = "x";
+    var yunique = "y";
+    var zunique = "z";
+    if(xselection =="RELEASE"){xunique = "";}
+    if(yselection == xselection){yunique ="";}
+    if((zselection == xselection) | (zselection == yselection)){zunique = "";}
+
+    unique = xunique+yunique+zunique;
+
 }
 
 var EaseOptions = ["sine", "elastic", "linear", "quad", "cubic", "bounce"]
@@ -144,10 +158,10 @@ var update = function(movies) {
         .ease(
             "cubic") // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("cx", function(d) {
-            return xScale(d[2]); // Circle's X
+            return xScale(d[3]); // Circle's X
         })
         .attr("cy", function(d) {
-            return yScale(d[3]); // Circle's Y
+            return yScale(d[4]); // Circle's Y
         })
         .each("end", function() { // End animation
             d3.select(this) // 'this' means the current element
@@ -156,13 +170,13 @@ var update = function(movies) {
                 //.attr("fill", "black")  // Change color
                 .attr("r", function(d) {
                     if (zdropdown.value == "Rotten_Tomatoes") {
-                        return 1.2 * Math.pow(d[4], .5);
+                        return 1.2 * Math.pow(d[5], .5);
                     } else if (zdropdown.value == "ADJBUDGET") {
-                        return .0007 * Math.pow(d[4], .5);
+                        return .0007 * Math.pow(d[5], .5);
                     } else if (zdropdown.value == "ADJUSTED") {
-                        return .00033 * Math.pow(d[4], .5);
+                        return .00033 * Math.pow(d[5], .5);
                     } else if (zdropdown.value == "IMDB") {
-                        return 4 * Math.pow(d[4], .5);
+                        return 4 * Math.pow(d[5], .5);
                     } else if (zdropdown.value == "NONE") {
                         return 5;
                     }
@@ -215,7 +229,7 @@ var drawlegend = function() {
         } else if (zdropdown.value == "NONE") {
             return 0;
         }
-    }).attr("fill", "#800080").attr("opacity", .7);
+    }).transition().duration(800).delay(1700).attr("fill", "#800080").attr("opacity", .7);
 
 
 
@@ -229,7 +243,7 @@ var drawlegend = function() {
     for (var j = 0; j < 3; j++) {
 
         d3.select("svg").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
-            .attr("transform", "translate(" + (canvas_width - 1.6 * padding) + "," + legLabelLoc + ")") // centre below axis
+            .style("fill","#BBBBBB").attr("transform", "translate(" + (canvas_width - 1.6 * padding) + "," + legLabelLoc + ")") // centre below axis
             .text(function() {
 
                 if ((zselection == "ADJUSTED") | (zselection == "ADJBUDGET")) {
@@ -243,9 +257,9 @@ var drawlegend = function() {
     }
 
     d3.select("#LegTitle").remove();
-    d3.select("svg").append("text").attr("id", "LegTitle").attr("text-anchor", "left")
-        .attr("transform", "translate(" + (canvas_width - 1.8 * padding) + "," + .47 * canvas_height + ")").text(hoverz).attr("font-size", 22);
-
+    d3.select("svg").append("text").style("fill","#BBBBBB").attr("id", "LegTitle").attr("text-anchor", "left")
+        .attr("transform", "translate(" + (canvas_width - 1.8 * padding) + "," + .47 * canvas_height + ")")
+        .text(hoverz).attr("font-size", 22)
 
 }
 
@@ -273,11 +287,17 @@ var updatex = function(d) {
         Minx = 2;
         Maxx = 10;
     }
-    MoviePoints = LoadData(xselection, yselection, zselection);
+
+    for (var i = 0; i < MoviePoints.length; i++) {
+        var obj = MovieJSON[i];
+        MoviePoints[i][3] = obj[xselection]
+    }
+
     update(MoviePoints);
     xlabupdate();
     titleupdate();
     setHoverValues();
+    getunique()
 }
 
 
@@ -299,11 +319,17 @@ var updatey = function(d) {
         Miny = 2;
         Maxy = 10;
     }
-    MoviePoints = LoadData(xselection, yselection, zselection);
+    
+     for (var i = 0; i < MoviePoints.length; i++) {
+        var obj = MovieJSON[i];
+        MoviePoints[i][4] = obj[yselection]
+    }
+
     update(MoviePoints);
     ylabupdate();
     titleupdate();
     setHoverValues();
+    getunique();
 }
 
 
@@ -320,17 +346,23 @@ var updatez = function() {
     } else if (zselection == "ADJUSTED") {
         Maxz = maxAdjusted;
     }
-    MoviePoints = LoadData(xselection, yselection, zselection);
+   
+ for (var i = 0; i < MoviePoints.length; i++) {
+        var obj = MovieJSON[i];
+        MoviePoints[i][5] = obj[zselection]
+    }
+
     update(MoviePoints);
     titleupdate();
     setHoverValues();
     drawlegend();
+    getunique();
 }
 
 
 // Setup settings for graphic
-var canvas_width = 1000;
-var canvas_height = 700;
+var canvas_width = 1300;
+var canvas_height = 800;
 var padding = 150; // for chart edges
 
 
@@ -379,20 +411,20 @@ var svg = d3.select("#Scatter") // This is where we put our vis
 //Add Axis Labels
 var xlabupdate = function() {
     d3.select("#xlab").remove();
-    svg.append("text").attr("id", "xlab")
+    svg.append("text").style("fill","#BBBBBB").attr("id", "xlab").attr("font-size", 22).transition().delay(800).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", "translate(" + (3 * canvas_width / 7) + "," + (canvas_height - (.7 * padding)) + ")") // centre below axis
         .text(function() {
             if (xselection == "Rotten_Tomatoes") {
                 return "Rotten Tomatoes Score";
             } else if (xselection == "ADJBUDGET") {
-                return "Adjusted Budget";
+                return "Budget";
             } else if (xselection == "RELEASE") {
                 return "Release Year";
             } else if (xselection == "IMDB") {
                 return "IMDB Score";
             } else if (xselection == "ADJUSTED") {
-                return "Adjusted Revenue";
+                return "Revenue";
             }
         });
 
@@ -400,7 +432,7 @@ var xlabupdate = function() {
 
 var ylabupdate = function() {
     d3.select("#ylab").remove();
-    svg.append("text").attr("id", "ylab")
+    svg.append("text").style("fill","#BBBBBB").attr("font-size",22).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", function(d) {
             if (yselection == "Rotten_Tomatoes") {
@@ -415,12 +447,12 @@ var ylabupdate = function() {
             if (yselection == "Rotten_Tomatoes") {
                 return "Rotten Tomatoes Score";
             } else if (yselection == "ADJBUDGET") {
-                return "Adjusted Budget";
+                return "Budget";
             } else if (yselection == "IMDB") {
 
                 return "IMDB Score";
             } else if (yselection == "ADJUSTED") {
-                return "Adjusted Revenue";
+                return "Revenue";
             }
         });
 
@@ -466,6 +498,7 @@ var titleupdate = function() {
     d3.select("#ScatterTitle").remove();
     svg.append("text").attr("id", "ScatterTitle")
         .attr("text-anchor", "middle")
+        .style("fill", "#BBBBBB")
         .attr("transform", "translate(" + canvas_width / 2.4 + "," + padding / 2 + ")")
         .text(maketitle())
         .attr("font-size", "30")
@@ -479,21 +512,21 @@ var yvalue;
 var zvalue;
 var formattedValues = function(point) {
     if (xselection == ("ADJBUDGET") | xselection == ("ADJUSTED")) {
-        xvalue = "$" + point[2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        xvalue = "$" + point[3].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
-        xvalue = point[2];
+        xvalue = point[3];
     }
 
     if (yselection == ("ADJBUDGET") | yselection == ("ADJUSTED")) {
-        yvalue = "$" + point[3].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        yvalue = "$" + point[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
-        yvalue = point[3];
+        yvalue = point[4];
     }
 
     if (zselection == ("ADJBUDGET") | zselection == ("ADJUSTED")) {
-        zvalue = "$" + point[4].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        zvalue = "$" + point[5].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
-        zvalue = point[4];
+        zvalue = point[5];
     }
 
 
@@ -520,6 +553,7 @@ drawlegend()
 //Set initial title
 titleupdate();
 
+getunique();
 
 
 
@@ -529,12 +563,51 @@ var tip = d3.tip()
     .offset([-10, 0])
     .html(function(d) {
         formattedValues(d);
-        return "<strong>Movie Name:</strong> <span style='color:red'>" + d[0] + " </span> <br/>" +
-            "<strong>Franchise:</strong> <span style='color:red'>" + d[1] + " </span> <br/>" +
-            "<strong>" + hoverx + ":</strong> <span style='color:red'>" + xvalue + " </span> <br/>" +
-            "<strong>" + hovery + ":</strong> <span style='color:red'>" + yvalue + " </span> <br/>" +
-            "<strong>" + hoverz + ":</strong> <span style='color:red'>" + zvalue + " </span> <br/>";
-    })
+var col
+        if(unique =="xyz"){
+        return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:#BBBBBB>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:#BBBBBB'>" + zvalue + " </span> <br/>";
+        }
+        else if (unique =="yz"){
+            return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:#BBBBBB'>" + zvalue + " </span> <br/>";
+        }
+        else if (unique =="xz"){
+             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:#BBBBBB'>" + zvalue + " </span> <br/>";
+        }
+         else if (unique =="xy"){
+             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>";
+        }
+         else if (unique =="x"){
+             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" 
+        }
+         else if (unique =="y"){
+             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>" 
+        }
+}
+
+)
 svg.call(tip);
 
 
@@ -556,40 +629,40 @@ d3.select("svg").selectAll("#point")
     .append("circle") // Add circle svg
     .attr("id", "point").attr("cx", function(d) {
         if ((d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection == "ADJUSTED") & (zselection == "ADJBUDGET")) {
-            return xScale(d[2]) - 5; // Circle's X
+            return xScale(d[3]) - 5; // Circle's X
         } else {
-            return xScale(d[2]);
+            return xScale(d[3]);
         }
     })
     .attr("cy", function(d) { // Circle's Y
-        return yScale(d[3]);
+        return yScale(d[4]);
     })
     .attr("r", function(d) {
         if (zdropdown.value == "Rotten_Tomatoes") {
-            return 1.2 * Math.pow(d[4], .5);
+            return 1.2 * Math.pow(d[5], .5);
         } else if (zdropdown.value == "ADJBUDGET") {
-            return .0007 * Math.pow(d[4], .5);
+            return .0007 * Math.pow(d[5], .5);
         } else if (zdropdown.value == "ADJUSTED") {
-            return .00033 * Math.pow(d[4], .5);
+            return .00033 * Math.pow(d[5], .5);
         } else if (zdropdown.value == "IMDB") {
-            return 4 * Math.pow(d[4], .5);
+            return 4 * Math.pow(d[5], .5);
         } else if (zdropdown.value == "NONE") {
             return 5
         }
     })
     .style("fill", function(d) {
-        if (d[1] == "DC") {
-            return "blue";
+        if (d[2] == "DC") {
+            return "#0020C2";
         } else {
-            return "red";
+            return "#D60E0E";
         }
     })
     .style("opacity", .6)
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide)
     .on("click", function(d) {
-        selections[d[1]] = d[0]
-        char[d[1]] = d[5]
+        selections[d[2]] = d[0]
+        char[d[2]] = d[6] //****************Not sure whats happening here
 
         if (selections["DC"] != null && selections["Marvel"] != null) {
             console.log("Populating world map with comparison data");

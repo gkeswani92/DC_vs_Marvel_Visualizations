@@ -51,25 +51,29 @@ function gethero(chararr) {
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 180)
-                .text("Name: " + name);
+                .text("Name: " + name)
+                .style("fill", "#BBBBBB");
 
             lScale = d3.scale.linear().domain([0, 4050]).range([0, 150]);
 
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 200)
-                .text("Appearances in comics: " + appearance + " times");
+                .text("Appearances in comics: " + appearance + " times")
+                .style("fill", "#BBBBBB");
 
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 220)
-                .text("Appearances in movie: " + more.length + " times");
+                .text("Appearances in movie: " + more.length + " times")
+                .style("fill", "#BBBBBB");
 
             for (k = 0; k < more.length; k++) {
                 svg.append("text")
                     .attr("x", 15)
                     .attr("y", 240 + k * 20)
-                    .text(more[k].film + ": $" + more[k].revenue);
+                    .text(more[k].film + ": $" + more[k].revenue)
+                    .style("fill","#BBBBBB");
             }
         }
     }

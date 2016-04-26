@@ -1,10 +1,13 @@
-.d3-tip {
+
+  .d3-tip {
   line-height: 1;
   font-weight: bold;
   padding: 12px;
   background: rgba(0, 0, 0, 0.8);
-  color: #fff;
+  color: #CCCCCC;
+  opacity:.3;
   border-radius: 2px;
+
 }
 
 /* Creates a small triangle extender for the tooltip */
@@ -31,22 +34,23 @@
 .axis path,
 .axis line {
     fill: none;
-    stroke: black;
+    stroke: #BBBBBB;
     shape-rendering: crispEdges;
 }
 
 .axis text {
     font-family: sans-serif;
     font-size: 11px;
+    fill: #BBBBBB;
 }
 
 #ScaleSelection {
     position: relative;
-    top: 280px;
-    left:  65%;
+    top: 320px;
+    left:  80%;
     width: 163px;
     height: 210px;
-    border: 2px solid #800080;
+    border: .5px solid #777777;
 }
 
 .header img {
@@ -59,8 +63,13 @@
   top: 18px;
   font-family: sans-serif;
   text-align: center;
+  color: #BBBBBB;
 }
+
+
 
 body {
     text-align: center;
+    background-color: #333333;
+    color: #BBBBBB;
 }

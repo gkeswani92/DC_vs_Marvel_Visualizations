@@ -9,7 +9,7 @@
 
         <link href='style.css' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
     </head>
 
     <body>
@@ -24,7 +24,7 @@
                 <h3 id = "xScales">Select X Scale
                     <select id="xdropdown" class="xdropdown" onchange = "updatex()">
                         <option value="RELEASE" selected = "selected" >Release Year</option>
-                        <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+                        <option value="Rotten_Tomatoes" >Rotten Tomatoes</option>
                         <option value="IMDB" >IMDB Score</option>
                         <option value="ADJBUDGET" >Budget</option>
                         <option value="ADJUSTED" >Revenue</option>
@@ -33,7 +33,7 @@
 
                 <h3 id = "yScales">Select Y Scale
                     <select id="ydropdown" class="ydropdown" onchange = "updatey()">
-                        <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+                        <option value="Rotten_Tomatoes" >Rotten Tomatoes</option>
                         <option value="IMDB" >IMDB Score</option>
                         <option value="ADJBUDGET">Budget</option>
                         <option value="ADJUSTED" selected = "selected" >Revenue</option>
@@ -42,10 +42,10 @@
 
                 <h3 id = "zScales">Select Size Scale
                     <select id="zdropdown" class="zdropdown" onchange = "updatez()">
-                        <option value="Rotten_Tomatoes" >Rotten Tomatoes Score</option>
+                        <option value="Rotten_Tomatoes" >Rotten Tomatoes</option>
                         <option value="IMDB" >IMDB Score</option>
-                        <option value="ADJUSTED" >Adjusted Revenue</option>
-                        <option value="ADJBUDGET" selected = "selected" >Adjusted Budget</option>
+                        <option value="ADJUSTED" >Revenue</option>
+                        <option value="ADJBUDGET" selected = "selected" >Budget</option>
                         <option value="NONE" > None</option>
                     </select>
                 </h3>
