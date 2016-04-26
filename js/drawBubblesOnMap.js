@@ -1,6 +1,11 @@
 //Draws the world map on the canvas with the required hover and pop up
 //properties
 function drawWorldMap(){
+    var contain = document.getElementById('container');
+    while (contain.firstChild) {
+        contain.removeChild(contain.firstChild);
+    }
+
     var map = new Datamap({
         element: document.getElementById('container'),
         projection: 'mercator',
@@ -30,8 +35,9 @@ function drawWorldMap(){
 
 function drawBubbles(movie1, movie2){
 
-    map.bubbles([]);
+
     var bubbleData = [];
+    var map = drawWorldMap();
 
     //Collection data for the movies that have been passed in
     for (var movie_name in movieRevenue){
@@ -60,7 +66,6 @@ function drawBubbles(movie1, movie2){
                                     "fillKey":franchise,
                                     "film":movie_name,
                                     radius: revenue * 100 * 3 / total_revenue};
-                        console.log(obj);
                         bubbleData.push(obj);
                     }
                 }
@@ -89,5 +94,4 @@ function drawBubbles(movie1, movie2){
 }
 
 var data = ['country', 'revenue','latitude','longitude'];
-var map = drawWorldMap();
-drawBubbles("The Dark Knight Rises","Iron Man 3");
+drawBubbles("Iron Man 3","The Dark Knight Rises");
