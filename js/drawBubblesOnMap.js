@@ -9,7 +9,7 @@ function drawWorldMap(){
         },
         geographyConfig: {
             highlightOnHover: true,
-            hideHawaiiAndAlaska : true,
+            hideHawaiiAndAlaska : false,
             popupOnHover: true,
         },
         bubblesConfig: {
@@ -29,14 +29,14 @@ function drawWorldMap(){
 }
 
 function drawBubbles(movie1, movie2){
-    var bubbleData = [];
+
     map.bubbles([]);
+    var bubbleData = [];
 
     //Collection data for the movies that have been passed in
     for (var movie_name in movieRevenue){
         if(movie_name == movie1 || movie_name == movie2){
             if (movieRevenue.hasOwnProperty(movie_name)) {
-
                 var movie_data = movieRevenue[movie_name];
 
                 //From the data, checking if we have enough information
@@ -60,6 +60,7 @@ function drawBubbles(movie1, movie2){
                                     "fillKey":franchise,
                                     "film":movie_name,
                                     radius: revenue * 100 * 3 / total_revenue};
+                        console.log(obj);
                         bubbleData.push(obj);
                     }
                 }

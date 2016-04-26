@@ -24,7 +24,7 @@ function gethero(chararr){
                 each={film:film,revenue:revenue};
                 more.push(each)
             }
-        
+
         }
             var svg=d3.select("#photo"+m)
             // .attr("class","character")
@@ -34,7 +34,7 @@ function gethero(chararr){
             .attr("height",height);
 
             area = svg.selectAll("image").data([0]);
-        
+
             area.enter()
             .append("svg:image")
             .attr("class","image")
@@ -44,7 +44,7 @@ function gethero(chararr){
             .attr("height",150)
             .attr("xlink:href",image)
             .attr("opacity",0.9);
- 
+
             svg.append("text")
             .attr("x",15)
             .attr("y",180)
@@ -64,31 +64,10 @@ function gethero(chararr){
 
             for (k=0;k<more.length;k++){
                 svg.append("text")
-            .attr("x",15)
-            .attr("y",240+k*20)
-            .text(more[k].film+": $"+more[k].revenue);
-
-
+                    .attr("x",15)
+                    .attr("y",240+k*20)
+                    .text(more[k].film+": $"+more[k].revenue);
             }
-            }
-            
-
-
-            // svg.append("rect")
-            // .attr("x", 35)
-            // .attr("y", 240)
-            // .attr("width", lScale(appearance))
-            // .attr("height",20)
-            // .style("fill",function(){if(company=="DC"){return "blue";} else{ return "red"}})
-            // .style("opacity",0.6)
-        
-
-
-
-
-
-          
+        }
      }
-         
-         }
-         
+}
