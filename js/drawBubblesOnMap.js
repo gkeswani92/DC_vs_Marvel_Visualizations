@@ -37,9 +37,23 @@ function drawWorldMap() {
     return map;
 }
 
+//Draws the bubble for the movies that have been passed in
 function drawBubbles(movie1, movie2) {
 
+    current_movie1 = movie1;
+    current_movie2 = movie2;
 
+    if (document.getElementById('worldMapCheck').checked) {
+        console.log("Toggle checked to get relative revenue of DC and Marvel");
+    } else {
+        console.log("Toggle unchecked to get absolute revenue of DC and Marvel");
+        drawAbsoluteRevenueComparisonBubbles(movie1, movie2);
+    }
+}
+
+function drawAbsoluteRevenueComparisonBubbles(movie1, movie2){
+
+    console.log("Inside drawAbsoluteRevenueComparisonBubbles");
     var bubbleData = [];
     var map = drawWorldMap();
 
@@ -100,5 +114,18 @@ function drawBubbles(movie1, movie2) {
     });
 }
 
-var data = ['country', 'revenue', 'latitude', 'longitude'];
-drawBubbles("Iron Man 3", "The Dark Knight Rises");
+//Stores the last 2 movies that have been plotted on the world map
+var current_movie1;
+var current_movie2;
+
+//Event listener for the toggle button being switched between absolute and relative revenues
+document.addEventListener("DOMContentLoaded", function (event) {
+    var _selector = document.querySelector('input[name=revenueCompareMethod]');
+    _selector.addEventListener('change', function (event) {
+        console.log("Toggle button was switched");
+        drawBubbles(current_movie1, current_movie2);
+    });
+});
+
+//Default bubbles are for Iron Man 3 and The Dark Knight Rises
+drawAbsoluteRevenueComparisonBubbles("Iron Man 3", "The Dark Knight Rises");
