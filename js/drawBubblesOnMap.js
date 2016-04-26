@@ -30,14 +30,16 @@ function drawWorldMap(){
 
 function drawBubbles(movie1, movie2){
 
-    map.bubbles([])
+    console.log(movieRevenue);
+
     var bubbleData = [];
-    console.log(bubbleData);
+    map.bubbles([])
 
     //Collection data for the movies that have been passed in
     for (var movie_name in movieRevenue){
         if(movie_name == movie1 || movie_name == movie2){
             if (movieRevenue.hasOwnProperty(movie_name)) {
+
                 var movie_data = movieRevenue[movie_name];
 
                 //From the data, checking if we have enough information
@@ -60,7 +62,7 @@ function drawBubbles(movie1, movie2){
                                     "company":franchise,
                                     "fillKey":franchise,
                                     "film":movie_name,
-                                    radius: revenue * 100 * 5 / total_revenue};
+                                    radius: revenue * 100 * 2 / total_revenue};
                         bubbleData.push(obj);
                     }
                 }
@@ -68,13 +70,11 @@ function drawBubbles(movie1, movie2){
         }
     }
 
-    console.log(bubbleData);
     //Sorting so that small radius will be displayed over the bigger radius
     //bubble so that both can be hovered on
     bubbleData.sort(function(a, b) {
         return b.radius - a.radius;
     });
-    console.log(bubbleData);
 
     //Draw bubbles for the data
     map.bubbles(bubbleData, {
