@@ -6337,7 +6337,7 @@ var MovieJSON = [
   },
   {
     "COMPANY":"Marvel",
-    "FILM":"Fantastic Four",
+    "FILM":"Fantastic Four 2015",
     "RELEASE":2015,
     "ADJUSTED":167977596,
     "WORLDWIDE":167977596,
@@ -6348,7 +6348,7 @@ var MovieJSON = [
     "BUDGET":120000000,
     "FOREIGN":111860048,
     "Studio":"Fox",
-    "Characters":["Mr. Fantastic", "Human Torch", "The Invisible Woman", "The Thing", "Dr. Doom"],
+    "Characters":["Mr. Fantastic", "Human Torch", "Invisible Woman", "The Thing", "Doctor Doom"],
     "Argentina":1425574,
     "Aruba":null,
     "Australia":3874288,
