@@ -3,15 +3,30 @@ function gethero(chararr) {
     height = 450;
     width = 370;
     padding = 20;
+
+    // tipchar=d3.tip()
+    // .attr("class","d3-tip")
+    // .offset([-10,0])
+    // .html(function(d){
+    //      "Movie:revenue:"})
+
+
+
+
+
+
+
     for (m = 0; m < chararr.length; m++) {
         // film=moviearr[m]
         cha = chararr[m];
         // company=movie[film].COMPANY;
+        color=["blue","red"]
 
         for (var i = 0; i < cha.length; i++) {
             name = cha[i];
             appearance = character[name].APPEARANCES;
             image = character[name].pic;
+            company=
             more = [];
             for (var j in MovieJSON) {
                 // console.log(j);
@@ -76,16 +91,33 @@ function gethero(chararr) {
                 .attr("y", 175)
                 .attr("width", comicscale(appearance))
                 .attr("height",8)
-                .style("fill","#990033")
-                .style("opacity",0.6);
+                .style("fill",color[m])
+                .style("opacity",0.5);
 
             svg.append("rect")
                 .attr("x", 15)
                 .attr("y", 200)
                 .attr("width", moviescale(more.length))
                 .attr("height",8)
-                .style("fill","#990033")
-                .style("opacity",0.6);
+                .style("fill",color[m])
+                .style("opacity",0.5);
+
+            //max box
+            svg.append("rect")
+                .attr("x", 15)
+                .attr("y", 175)
+                .attr("width", 350)
+                .attr("height",8)
+                .style("fill","white")
+                .style("opacity",0.1)
+
+             svg.append("rect")
+                .attr("x", 15)
+                .attr("y", 200)
+                .attr("width", 350)
+                .attr("height",8)
+                .style("fill","white")
+                .style("opacity",0.1)
 
             for (k = 0; k < more.length; k++) {
                 svg.append("text")
@@ -99,10 +131,19 @@ function gethero(chararr) {
                 .attr("y", 230+k *25)
                 .attr("width", salescale(more[k].revenue))
                 .attr("height",8)
-                .style("fill","#ff4c4c")
-                .style("opacity",0.6);
+                .style("fill",color[m])
+                .style("opacity",0.5)
+                //.on('mouseover', tipchar.show)
+                //.on('mouseout', tipchar.hide);
 
-
+            // max box
+            svg.append("rect")
+                .attr("x", 15)
+                .attr("y", 230+k *25)
+                .attr("width", 350)
+                .attr("height",8)
+                .style("fill","white")
+                .style("opacity",0.1)
 
 
             }

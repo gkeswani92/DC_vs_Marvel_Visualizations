@@ -671,11 +671,11 @@ d3.select("svg").selectAll("#point")
         } else if (selections["DC"] != null) {
             console.log("Can populate DC data or you can select a marvel movie to compare");
             drawBubbles(selections["DC"], "");
-            gethero([char["DC"]]);
+            gethero([char["DC"],[]]);
         } else if (selections["Marvel"] != null) {
             console.log("Can populate Marvel data or you can select a DC movie to compare");
             drawBubbles("",selections["Marvel"]);
-            gethero([char["Marvel"]]);
+            gethero([[],char["Marvel"]]);
         } else {
             console.log("Populating world map with comparison data");
         }
