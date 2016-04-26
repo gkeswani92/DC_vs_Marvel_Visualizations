@@ -43,8 +43,24 @@
 #ScaleSelection {
     position: relative;
     top: 280px;
-    left:  700px;
+    left:  65%;
     width: 163px;
     height: 210px;
     border: 2px solid #800080;
+}
+
+.header img {
+  width: 100%;
+  height: 400px;
+}
+
+.header h1 {
+  position: relative;
+  top: 18px;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+body {
+    text-align: center;
 }
