@@ -48,7 +48,7 @@ var character={
     "APPEARANCES":4043,
     "pic":"image/spider.jpg"
   },
-  "Deadppol":{
+  "Deadpool":{
     "APPEARANCES":500,
     "pic":"image/deadpool.jpg"
   },
@@ -102,7 +102,7 @@ var character={
   },
 "Mr.Freeze":{
     "APPEARANCES":569,
-    "pic":"image/mrfreeze.jpg"
+    "pic":"image/mrfreeeze.jpg"
   },
 "Batgirl":{
     "APPEARANCES":951,
@@ -168,7 +168,7 @@ var character={
     "APPEARANCES":3,
     "pic":"image/nemo.jpg"
   },
-"Nighcrawler":{
+"Nightcrawler":{
     "APPEARANCES":1047,
     "pic":"image/nightcrawler.jpg"
   },
