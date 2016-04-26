@@ -55,11 +55,23 @@
             <h3 id = "Scatter"></h3>
         </div>
 
-        <h2> Switch on to compare relative revenue and switch off for absolute revenue </h2>
+        <h1 id = "worldtitle"> Comparing revenue of Marvel's "Iron Man 3" and DC's "The Dark Knight Rises"</h1>
+        <h3> Toggle switch on to compare relative revenue and toggle off to compare absolute revenue </h3>
         <label class="switch">
             <input type="checkbox" name="revenueCompareMethod" id="worldMapCheck">
             <div class="slider round"></div>
         </label>
+
+        <br/>
+        <br/>
+
+        <h3> Click button to reset world map selections </h3>
+        <button onclick="resetSelections()">Reset movie selections for world map</button>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
 
         <!-- Container for the world map -->
         <div id="container" style="position:relative; width: 100%; height: 1000px;"></div>

@@ -43,12 +43,26 @@ function drawBubbles(movie1, movie2) {
     current_movie1 = movie1;
     current_movie2 = movie2;
 
+    //Figuring out whether to carry out absolute or relative comparison
     if (document.getElementById('worldMapCheck').checked) {
         console.log("Toggle checked to get relative revenue of DC and Marvel");
         drawRelativeRevenueComparisonBubbles(movie1, movie2);
     } else {
         console.log("Toggle unchecked to get absolute revenue of DC and Marvel");
         drawAbsoluteRevenueComparisonBubbles(movie1, movie2);
+    }
+
+    //Changing the title of the visualization depending on the selection
+    var heading = document.getElementById('worldtitle');
+
+    if(movie1 == "" && movie2 == "") {
+        heading.innerText = "Waiting for user to click on bubble's in scatterplot so to analyse revenue data";
+    } else if(movie1 == "") {
+        heading.innerText = "Analysing revenue of Marvel's \"" + movie2 + "\". Click on a blue circle to compare it with a DC movie";
+    } else if(movie2 == "") {
+        heading.innerText = "Analysing revenue of DC's \"" + movie1 + "\". Click on a red circle to compare it with a Marvel movie";
+    } else {
+        heading.innerText = "Comparing revenue of Marvel's \"" + movie2 + "\" and DC's \"" +movie1 + "\"";
     }
 }
 
@@ -86,6 +100,13 @@ function drawAbsoluteRevenueComparisonBubbles(movie1, movie2){
                             radius: Math.sqrt(revenue * 100 / total_revenue) * 12
                         };
                         bubbleData.push(obj);
+                    }
+                    //TODO: Remove this else clause later. Just for checking which countries are printed wrong
+                    else {
+                        if (countryData.hasOwnProperty(country)) {
+                        } else {
+                            console.log(country);
+                        }
                     }
                 }
             }
@@ -214,6 +235,18 @@ function drawRelativeRevenueComparisonBubbles(movie1, movie2){
             ].join('');
         }
     });
+}
+
+function resetSelections(){
+    selections = {
+        "DC": null,
+        "Marvel": null
+    };
+    char = {
+        "DC": null,
+        "Marvel": null
+    };
+    drawBubbles("", "");
 }
 
 //Stores the last 2 movies that have been plotted on the world map

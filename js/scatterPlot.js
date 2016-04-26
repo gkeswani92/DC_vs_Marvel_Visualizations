@@ -319,7 +319,7 @@ var updatey = function(d) {
         Miny = 2;
         Maxy = 10;
     }
-    
+
      for (var i = 0; i < MoviePoints.length; i++) {
         var obj = MovieJSON[i];
         MoviePoints[i][4] = obj[yselection]
@@ -346,7 +346,7 @@ var updatez = function() {
     } else if (zselection == "ADJUSTED") {
         Maxz = maxAdjusted;
     }
-   
+
  for (var i = 0; i < MoviePoints.length; i++) {
         var obj = MovieJSON[i];
         MoviePoints[i][5] = obj[zselection]
@@ -597,13 +597,13 @@ var col
              return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
             "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
              "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" 
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>"
         }
          else if (unique =="y"){
              return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
             "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
              "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>" 
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>"
         }
 }
 
@@ -674,7 +674,7 @@ d3.select("svg").selectAll("#point")
             gethero([char["DC"]]);
         } else if (selections["Marvel"] != null) {
             console.log("Can populate Marvel data or you can select a DC movie to compare");
-            drawBubbles(selections["Marvel"], "");
+            drawBubbles("",selections["Marvel"]);
             gethero([char["Marvel"]]);
         } else {
             console.log("Populating world map with comparison data");
