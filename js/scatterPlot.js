@@ -120,7 +120,7 @@ var LoadData = function(s1, s2, s3) {
   var MoviePoints = [];
   for (var i = 0; i<MovieJSON.length;i++){
       var obj = MovieJSON[i];
-      MoviePoints.push([obj.FILM, obj.COMPANY, Number(obj[s1]), Number(obj[s2]), Number(obj[s3])])
+      MoviePoints.push([obj.FILM, obj.COMPANY, Number(obj[s1]), Number(obj[s2]), Number(obj[s3]),obj.Characters])
   }
   return MoviePoints;
 }
@@ -573,7 +573,8 @@ titleupdate();
 
 
 var selections = {"DC":null, "Marvel":null};
-
+var char={"DC":null, "Marvel":null};
+console.log(MoviePoints)
 // Create Circles
 d3.select("svg").selectAll("#point")
   .data(MoviePoints)
@@ -608,16 +609,21 @@ d3.select("svg").selectAll("#point")
   .on('mouseout', tip.hide)
   .on("click", function(d) {
       selections[d[1]] = d[0]
+      char[d[1]]=d[5]
       console.log(selections);
+      console.log(char);
       if(selections["DC"] != null && selections["Marvel"] != null){
           console.log("Populating world map with comparison data");
           drawBubbles(selections["DC"], selections["Marvel"]);
+          gethero([char["DC"],char["Marvel"]]);
       } else if(selections["DC"] != null){
           console.log("Can populate DC data or you can select a marvel movie to compare");
           drawBubbles(selections["DC"], "");
+          gethero([char["DC"]]);
       } else if(selections["Marvel"] != null){
           console.log("Can populate Marvel data or you can select a DC movie to compare");
           drawBubbles("", selections["Marvel"]);
+          gethero([char["Marvel"]]);
       } else {
           console.log("Populating world map with comparison data");
       }
