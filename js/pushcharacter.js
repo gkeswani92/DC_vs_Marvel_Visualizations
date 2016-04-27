@@ -10,12 +10,6 @@ function gethero(chararr) {
     // .html(function(d){
     //      "Movie:revenue:"})
 
-
-
-
-
-
-
     for (m = 0; m < chararr.length; m++) {
         // film=moviearr[m]
         cha = chararr[m];
@@ -29,10 +23,6 @@ function gethero(chararr) {
             company=
             more = [];
             for (var j in MovieJSON) {
-                // console.log(j);
-                // console.log(movie[j]);
-                // console.log(movie[j].Characters)
-
                 if (MovieJSON[j].Characters.indexOf(name) != -1) {
                     film = MovieJSON[j].FILM
                     revenue = MovieJSON[j].ADJUSTED;
@@ -76,14 +66,14 @@ function gethero(chararr) {
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 165)
-                .text("Appearances in comics: " + appearance + " times")
+                .text("Comic Book Popularity " + appearance + " times")
                 .style("fill", "#BBBBBB");
 
 
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 195)
-                .text("Appearances in movie: " + more.length + " times")
+                .text("Movie Apperances: " + more.length + " times")
                 .style("fill", "#BBBBBB");
 
             svg.append("rect")
