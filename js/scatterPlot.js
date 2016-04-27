@@ -565,6 +565,8 @@ var tip = d3.tip()
         formattedValues(d);
 var col
         if(unique =="xyz"){
+            console.log("hi");
+            console.log(d[0]);
         return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:#BBBBBB>" + d[0] + " </span> <br/>" +
             "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB''>" + d[1] + " </span> <br/>" +
              "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +

@@ -64,6 +64,7 @@
   font-family: sans-serif;
   text-align: center;
   color: #BBBBBB;
+  width:100%;
 }
 
 
@@ -72,6 +73,7 @@ body {
     text-align: center;
     background-color: #333333;
     color: #BBBBBB;
+    width:100%;
 }
 
 
