@@ -21,8 +21,8 @@ function drawWorldMap() {
             borderWidth: 0,
         },
         fills: {
-            'DC': '#0000FF',
-            'Marvel': '#FF0000',
+            'DC': "#0020C2",
+            'Marvel': "#D60E0E",
             defaultFill: 'rgba(0,0,0,0.4)'
         },
         data: {
@@ -35,6 +35,7 @@ function drawWorldMap() {
         }
     });
     return map;
+
 }
 
 //Draws the bubble for the movies that have been passed in
