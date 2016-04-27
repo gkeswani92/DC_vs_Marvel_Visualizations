@@ -46,7 +46,7 @@ function gethero(chararr) {
     .offset([-10,0])
     .html(function(d){
           //console.log(d);
-         return "Max Movies Appearances: 8";})
+         return "Most Movies Appearances: 8";})
 
     var tipmo=d3.tip()
     .attr("class","d3-tip")
