@@ -6731,7 +6731,7 @@ var MovieJSON = [
     "IMDB":4.3,
     "ADJBUDGET":120000000,
     "BUDGET":120000000,
-    "Characters":[ "Mr. Fantastic", "Human Torch", "Invisible Woman", "The Thing", "Dr. Doom"],
+    "Characters":[ "Mr. Fantastic", "Human Torch", "Invisible Woman", "The Thing", "Doctor Doom"],
     "Argentina":1425574,
     "Aruba":null,
     "Australia":3874288,
