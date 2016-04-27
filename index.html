@@ -13,13 +13,13 @@
     </head>
 
     <body>
-        <div class="header">
-            <img src="image/header.jpg" alt="logo" />
+        <div class="header" width:100%>
+            <img src="image/header.jpg" alt="logo" width:100%/>
             <h1> How do these two superhero universes stack up in Hollywood?</h1>
         </div>
 
         <!-- Container for the scatterplot -->
-        <div id = "scatterPlot">
+        <div id = "scatterPlot" style = "width:100% height:500px">
             <div id = "ScaleSelection">
                 <h3 id = "xScales">Select X Scale
                     <select id="xdropdown" class="xdropdown" onchange = "updatex()">
@@ -55,7 +55,7 @@
             <h3 id = "Scatter"></h3>
         </div>
 
-        <h1 id = "worldtitle"> Comparing revenue of Marvel's "Iron Man 3" and DC's "The Dark Knight Rises"</h1>
+        <h1 id = "worldtitle" widht:100%> Comparing revenue of Marvel's "Iron Man 3" and DC's "The Dark Knight Rises"</h1>
         <h3> Toggle switch on to compare relative revenue and toggle off to compare absolute revenue </h3>
         <label class="switch">
             <input type="checkbox" name="revenueCompareMethod" id="worldMapCheck">
@@ -76,13 +76,7 @@
         <!-- Container for the world map -->
         <div id="container" style="position:relative; width: 100%; height: 1000px;"></div>
 
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
         <!-- Container for character analysies -->
-        <h1> Are DC characters doing better than Marvel characters? </h1>
         <div id ="photo0"></div>
         <div id ="photo1"></div>
 
@@ -91,7 +85,7 @@
         <script src="js/MoviesDat.js"></script>
         <script src="js/tip.js"></script>
         <script src="js/character information.js"></script>
-
+        
         <script src="js/scatterPlot.js"></script>
         <script src="js/drawBubblesOnMap.js"></script>
         <script src="js/pushcharacter.js"></script>

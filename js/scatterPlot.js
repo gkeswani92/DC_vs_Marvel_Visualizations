@@ -132,6 +132,11 @@ var getunique = function(){
 
 }
 
+
+
+
+
+
 var EaseOptions = ["sine", "elastic", "linear", "quad", "cubic", "bounce"]
 
 ///Update Scatterplot after selection
@@ -158,8 +163,19 @@ var update = function(movies) {
         .ease(
             "cubic") // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("cx", function(d) {
-            return xScale(d[3]); // Circle's X
-        })
+        if ((d[0] == "Constantine") & (xselection == "RELEASE") & (yselection == "ADJBUDGET"))  {
+            return xScale(d[3]) - 3; // Circle's X
+        } 
+        else if ((d[0] == "League of Extraordinary Gentlemen") & ((xselection == "ADJBUDGET")|(xselection == "ADJUSTED")|(xselection == "RELEASE")) & ((yselection == "ADJBUDGET")|(yselection == "ADJUSTED")) & ((zselection == "ADJBUDGET")|(zselection == "ADJUSTED"))) {
+            return xScale(d[3]) - 3; // Circle's X
+        }
+         else if ((d[0] == "Spider-Man 2") & ((xselection == "Rotten_Tomatoes")|(xselection == "IMDB")) & ((xselection == "Rotten_Tomatoes")|(xselection == "IMDB"))) {
+            return xScale(d[3]) - 4; // Circle's X
+        }
+        else {
+            return xScale(d[3]);
+        }
+    })
         .attr("cy", function(d) {
             return yScale(d[4]); // Circle's Y
         })
@@ -213,7 +229,7 @@ var drawlegend = function() {
 
     setLegendValues();
 
-    d3.select("svg").selectAll("#LegCircle").data(ThreeValues).enter().append("circle").attr("id", "LegCircle").attr("cx", canvas_width - 1.8 * padding).attr("cy", function(d, i) {
+    d3.select("svg").selectAll("#LegCircle").data(ThreeValues).enter().append("circle").attr("id", "LegCircle").attr("cx", canvas_width - 1.8 * xpadding).attr("cy", function(d, i) {
         var yloc = .497 * canvas_height;
         return yloc + i * 40;
 
@@ -243,7 +259,7 @@ var drawlegend = function() {
     for (var j = 0; j < 3; j++) {
 
         d3.select("svg").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
-            .style("fill","#BBBBBB").attr("transform", "translate(" + (canvas_width - 1.6 * padding) + "," + legLabelLoc + ")") // centre below axis
+            .style("fill","#BBBBBB").attr("transform", "translate(" + (canvas_width - 1.6 * xpadding) + "," + legLabelLoc + ")") // centre below axis
             .text(function() {
 
                 if ((zselection == "ADJUSTED") | (zselection == "ADJBUDGET")) {
@@ -258,8 +274,8 @@ var drawlegend = function() {
 
     d3.select("#LegTitle").remove();
     d3.select("svg").append("text").style("fill","#BBBBBB").attr("id", "LegTitle").attr("text-anchor", "left")
-        .attr("transform", "translate(" + (canvas_width - 1.8 * padding) + "," + .47 * canvas_height + ")")
-        .text(hoverz).attr("font-size", 22)
+        .attr("transform", "translate(" + (canvas_width - 1.8 * xpadding) + "," + .47 * canvas_height + ")")
+        .text(hoverz).attr("font-size", 32)
 
 }
 
@@ -363,17 +379,18 @@ var updatez = function() {
 // Setup settings for graphic
 var canvas_width = 1300;
 var canvas_height = 800;
-var padding = 150; // for chart edges
+var xpadding = 160; // for chart edge
+var ypadding = 80;
 
 
 // Create initial x scale functions for RELEASE year
 var xScale = d3.scale.linear() // xScale is width of graphic
     .domain([Minx, Maxx])
-    .range([padding, canvas_width - padding * 2]); // output range
+    .range([xpadding, canvas_width - xpadding * 2]); // output range
 
 var yScale = d3.scale.linear() // yScale is height of graphic
     .domain([Miny, Maxy])
-    .range([canvas_height - padding, padding]); // remember y starts on top going down so we flip
+    .range([canvas_height - ypadding, ypadding]);
 
 // Define X axis
 var xAxis = d3.svg.axis()
@@ -382,7 +399,7 @@ var xAxis = d3.svg.axis()
     .ticks(5)
     .tickFormat(function(d) {
         if ((xselection == "ADJBUDGET") | (xselection == "ADJUSTED")) {
-            return "$" + d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return "$ " + d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         } else {
             return d;
         }
@@ -395,7 +412,7 @@ var yAxis = d3.svg.axis()
     .ticks(6)
     .tickFormat(function(d) {
         if ((yselection == "ADJUSTED") | (yselection == "ADJBUDGET")) {
-            return "$" + d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return "$ " + d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         } else {
             return d;
         }
@@ -411,9 +428,9 @@ var svg = d3.select("#Scatter") // This is where we put our vis
 //Add Axis Labels
 var xlabupdate = function() {
     d3.select("#xlab").remove();
-    svg.append("text").style("fill","#BBBBBB").attr("id", "xlab").attr("font-size", 22).transition().delay(800).duration(500).ease("cubic")
+    svg.append("text").style("fill","#BBBBBB").attr("id", "xlab").attr("font-size", 32).transition().delay(800).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
-        .attr("transform", "translate(" + (3 * canvas_width / 7) + "," + (canvas_height - (.7 * padding)) + ")") // centre below axis
+        .attr("transform", "translate(" + (3 * canvas_width / 7) + "," + (canvas_height - (.3* ypadding)) + ")") // centre below axis
         .text(function() {
             if (xselection == "Rotten_Tomatoes") {
                 return "Rotten Tomatoes Score";
@@ -432,15 +449,15 @@ var xlabupdate = function() {
 
 var ylabupdate = function() {
     d3.select("#ylab").remove();
-    svg.append("text").style("fill","#BBBBBB").attr("font-size",22).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
+    svg.append("text").style("fill","#BBBBBB").attr("font-size",32).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", function(d) {
             if (yselection == "Rotten_Tomatoes") {
-                return "translate(" + padding / 1.4 + "," + (canvas_height / 2) + ") rotate(-90)";
+                return "translate(" + xpadding / 1.4 + "," + (canvas_height / 2) + ") rotate(-90)";
             } else if (yselection == "IMDB") {
-                return "translate(" + padding / 1.3 + "," + (canvas_height / 2) + ") rotate(-90)";
+                return "translate(" + xpadding / 1.3 + "," + (canvas_height / 2) + ") rotate(-90)";
             } else {
-                return "translate(" + padding / 2.7 + "," + (canvas_height / 2) + ") rotate(-90)";
+                return "translate(" + xpadding / 2.7 + "," + (canvas_height / 2) + ") rotate(-90)";
             }
         })
         .text(function() {
@@ -499,9 +516,9 @@ var titleupdate = function() {
     svg.append("text").attr("id", "ScatterTitle")
         .attr("text-anchor", "middle")
         .style("fill", "#BBBBBB")
-        .attr("transform", "translate(" + canvas_width / 2.4 + "," + padding / 2 + ")")
+        .attr("transform", "translate(" + canvas_width / 2.4 + "," + ypadding / 2 + ")")
         .text(maketitle())
-        .attr("font-size", "30")
+        .attr("font-size", "45")
 }
 
 
@@ -563,49 +580,52 @@ var tip = d3.tip()
     .offset([-10, 0])
     .html(function(d) {
         formattedValues(d);
-var col
+var cr = "#1F45FC";
+if(d[2] == "Marvel"){cr = "#9F000F";}
+
+
         if(unique =="xyz"){
             console.log("hi");
             console.log(d[0]);
-        return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:#BBBBBB>" + d[0] + " </span> <br/>" +
-            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB''>" + d[1] + " </span> <br/>" +
-             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:#BBBBBB'>" + zvalue + " </span> <br/>";
+        return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:"+cr+"''>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:"+cr+"''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:"+cr+"''>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:"+cr+"''>" + xvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:"+cr+"''>" + yvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:"+cr+"''>" + zvalue + " </span> <br/>";
         }
         else if (unique =="yz"){
-            return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
-            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
-             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:#BBBBBB'>" + zvalue + " </span> <br/>";
+            return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:"+cr+"''>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:"+cr+"''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:"+cr+"''>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:"+cr+"''>" + yvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:"+cr+"''>" + zvalue + " </span> <br/>";
         }
         else if (unique =="xz"){
-             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
-            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
-             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:#BBBBBB'>" + zvalue + " </span> <br/>";
+             return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:"+cr+"''>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:"+cr+"''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:"+cr+"''>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:"+cr+"''>" + xvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverz + ":</strong> <span style='color:"+cr+"''>" + zvalue + " </span> <br/>";
         }
          else if (unique =="xy"){
-             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
-            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
-             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>";
+             return "<strong>Movie Name:</strong> <span style='color:"+cr+"''>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:"+cr+"''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:"+cr+"''>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:"+cr+"''>" + xvalue + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:"+cr+"''>" + yvalue + " </span> <br/>";
         }
          else if (unique =="x"){
-             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
-            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
-             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:#BBBBBB'>" + xvalue + " </span> <br/>"
+             return "<strong>Movie Name:</strong> <span style='color:"+cr+"''>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:"+cr+"''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:"+cr+"''>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hoverx + ":</strong> <span style='color:"+cr+"''>" + xvalue + " </span> <br/>"
         }
          else if (unique =="y"){
-             return "<strong>Movie Name:</strong> <span style='color:#BBBBBB'>" + d[0] + " </span> <br/>" +
-            "<strong style='color:#888888'>Year:</strong> <span style='color:#BBBBBB'>" + d[1] + " </span> <br/>" +
-             "<strong style='color:#888888'>Universe:</strong> <span style='color:#BBBBBB'>" + d[2] + " </span> <br/>" +
-            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:#BBBBBB'>" + yvalue + " </span> <br/>"
+             return "<strong style='color:#888888'>Movie Name:</strong> <span style='color:"+cr+"''>" + d[0] + " </span> <br/>" +
+            "<strong style='color:#888888'>Year:</strong> <span style='color:"+cr+"''>" + d[1] + " </span> <br/>" +
+             "<strong style='color:#888888'>Universe:</strong> <span style='color:"+cr+"''>" + d[2] + " </span> <br/>" +
+            "<strong style='color:#888888'>" + hovery + ":</strong> <span style='color:"+cr+"''>" + yvalue + " </span> <br/>"
         }
 }
 
@@ -631,7 +651,7 @@ d3.select("svg").selectAll("#point")
     .append("circle") // Add circle svg
     .attr("id", "point").attr("cx", function(d) {
         if ((d[0] == "League of Extraordinary Gentlemen") & (xselection == "RELEASE") & (yselection == "ADJUSTED") & (zselection == "ADJBUDGET")) {
-            return xScale(d[3]) - 5; // Circle's X
+            return xScale(d[3]) - 3; // Circle's X
         } else {
             return xScale(d[3]);
         }
@@ -673,11 +693,11 @@ d3.select("svg").selectAll("#point")
         } else if (selections["DC"] != null) {
             console.log("Can populate DC data or you can select a marvel movie to compare");
             drawBubbles(selections["DC"], "");
-            gethero([char["DC"],[]]);
+            gethero([char["DC"]]);
         } else if (selections["Marvel"] != null) {
             console.log("Can populate Marvel data or you can select a DC movie to compare");
             drawBubbles("",selections["Marvel"]);
-            gethero([[],char["Marvel"]]);
+            gethero([char["Marvel"]]);
         } else {
             console.log("Populating world map with comparison data");
         }
@@ -686,11 +706,11 @@ d3.select("svg").selectAll("#point")
 // Add X axis
 svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + (canvas_height - padding) + ")")
+    .attr("transform", "translate(0," + (canvas_height - ypadding) + ")")
     .call(xAxis);
 
 // Add Y axis
 svg.append("g")
     .attr("class", "y axis")
-    .attr("transform", "translate(" + padding + ",0)")
+    .attr("transform", "translate(" + xpadding + ",0)")
     .call(yAxis);
