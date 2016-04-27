@@ -259,7 +259,7 @@ var drawlegend = function() {
     for (var j = 0; j < 3; j++) {
 
         d3.select("svg").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
-            .style("fill","#BBBBBB").attr("transform", "translate(" + (canvas_width - 1.6 * xpadding) + "," + legLabelLoc + ")") // centre below axis
+            .style("fill","#2c2b2b").attr("transform", "translate(" + (canvas_width - 1.6 * xpadding) + "," + legLabelLoc + ")") // centre below axis
             .text(function() {
 
                 if ((zselection == "ADJUSTED") | (zselection == "ADJBUDGET")) {
@@ -273,7 +273,7 @@ var drawlegend = function() {
     }
 
     d3.select("#LegTitle").remove();
-    d3.select("svg").append("text").style("fill","#BBBBBB").attr("id", "LegTitle").attr("text-anchor", "left")
+    d3.select("svg").append("text").style("fill","#2c2b2b").attr("id", "LegTitle").attr("text-anchor", "left")
         .attr("transform", "translate(" + (canvas_width - 1.8 * xpadding) + "," + .47 * canvas_height + ")")
         .text(hoverz).attr("font-size", 32)
 
@@ -428,7 +428,7 @@ var svg = d3.select("#Scatter") // This is where we put our vis
 //Add Axis Labels
 var xlabupdate = function() {
     d3.select("#xlab").remove();
-    svg.append("text").style("fill","#BBBBBB").attr("id", "xlab").attr("font-size", 32).transition().delay(800).duration(500).ease("cubic")
+    svg.append("text").style("fill","#2c2b2b").attr("id", "xlab").attr("font-size", 32).transition().delay(800).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", "translate(" + (3 * canvas_width / 7) + "," + (canvas_height - (.3* ypadding)) + ")") // centre below axis
         .text(function() {
@@ -449,7 +449,7 @@ var xlabupdate = function() {
 
 var ylabupdate = function() {
     d3.select("#ylab").remove();
-    svg.append("text").style("fill","#BBBBBB").attr("font-size",32).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
+    svg.append("text").style("fill","#2c2b2b").attr("font-size",32).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", function(d) {
             if (yselection == "Rotten_Tomatoes") {
@@ -515,7 +515,7 @@ var titleupdate = function() {
     d3.select("#ScatterTitle").remove();
     svg.append("text").attr("id", "ScatterTitle")
         .attr("text-anchor", "middle")
-        .style("fill", "#BBBBBB")
+        .style("fill", "#2c2b2b")
         .attr("transform", "translate(" + canvas_width / 2.4 + "," + ypadding / 2 + ")")
         .text(maketitle())
         .attr("font-size", "45")
