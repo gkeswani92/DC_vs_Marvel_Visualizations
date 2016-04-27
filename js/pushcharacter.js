@@ -15,7 +15,7 @@ function gethero(chararr) {
         marvel.innerText="Marvel Characters"
     }
 
-    height = 470;
+    height = 480;
     width = 370;
     padding = 20;
 
@@ -39,14 +39,14 @@ function gethero(chararr) {
     .offset([-10,0])
     .html(function(d){
           //console.log(d);
-         return "Max Comics Appearances: 4,043";})
+         return "Most Comics Appearances: 4,043";})
 
     var tipmomax=d3.tip()
     .attr("class","d3-tip")
     .offset([-10,0])
     .html(function(d){
           //console.log(d);
-         return "Max Movies Appearances: 8";})
+         return "Most Movies Appearances: 8";})
 
     var tipmo=d3.tip()
     .attr("class","d3-tip")
@@ -55,9 +55,14 @@ function gethero(chararr) {
           //console.log(d);
          return ;})
 
+ //return "#0020C2";
+   //     } else {
+     //       return "#D60E0E";
+       // }
+
     for (m = 0; m < chararr.length; m++) {
         cha = chararr[m];
-        color=["blue","red"]
+        color=["#0020C2","#D60E0E"]
 
         for (var i = 0; i < cha.length; i++) {
             name = cha[i];
@@ -100,18 +105,22 @@ function gethero(chararr) {
             area.enter()
                 .append("svg:image")
                 .attr("class", "image")
-                .attr("x", 15)
-                .attr("y", 10)
-                .attr("width", 120)
-                .attr("height", 120)
+                .attr("x", 135)
+                .attr("y", 0)
+                .attr("width", 180)
+                .attr("height", 180)
                 .attr("xlink:href", image)
-                .attr("opacity", 0.9);
+                .attr("opacity", 0.7);
 
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 150)
-                .text("Name: " + name)
-                .style("fill", "#BBBBBB");
+                .text(name)
+                .style("fill", color[m])
+                .style("font-size", "35px")
+                .style("font-family", "sans-serif")
+                .style("font-weight",  "bold")
+                .attr("stroke", "black")
 
             lScale = d3.scale.linear().domain([0, 4050]).range([0, 300]);
             comicscale=d3.scale.linear().domain([0, 4043]).range([0, 300]);
@@ -120,21 +129,21 @@ function gethero(chararr) {
 
             svg.append("text")
                 .attr("x", 15)
-                .attr("y", 170)
-                .text("Comics Appearances: " + appearance)
+                .attr("y", 190)
+                .text("Comic Appearances: " + appearance)
                 .style("fill", "#BBBBBB");
 
 
             svg.append("text")
                 .attr("x", 15)
-                .attr("y", 200)
-                .text("Movies Appearances: " + more.length)
+                .attr("y", 220)
+                .text("Movie Appearances: " + more.length)
                 .style("fill", "#BBBBBB"); 
 
              //max box
             svg.append("rect")
                 .attr("x", 15)
-                .attr("y", 175)
+                .attr("y", 195)
                 .attr("width", 300)
                 .attr("height",8)
                 .style("fill","white")
@@ -145,7 +154,7 @@ function gethero(chararr) {
              //max box
              svg.append("rect")
                 .attr("x", 15)
-                .attr("y", 205)
+                .attr("y", 225)
                 .attr("width", 300)
                 .attr("height",8)
                 .style("fill","white")
@@ -155,7 +164,7 @@ function gethero(chararr) {
 
             svg.append("rect")
                 .attr("x", 15)
-                .attr("y", 175)
+                .attr("y", 195)
                 .attr("width", comicscale(appearance))
                 .attr("height",8)
                 .style("fill",color[m])
@@ -164,7 +173,7 @@ function gethero(chararr) {
 
             svg.append("rect")
                 .attr("x", 15)
-                .attr("y", 205)
+                .attr("y", 225)
                 .attr("width", moviescale(more.length))
                 .attr("height",8)
                 .style("fill",color[m])
@@ -175,14 +184,14 @@ function gethero(chararr) {
 
                 svg.append("text")
                     .attr("x", 15)
-                    .attr("y", 235 + k * 30)
+                    .attr("y", 255 + k * 30)
                     .text(more[k].film)
                     .style("fill","#BBBBBB");
 
                 // max box
                 svg.append("rect")
                 .attr("x", 15)
-                .attr("y", 240+k *30)
+                .attr("y", 260+k *30)
                 .attr("width", 300)
                 .attr("height",8)
                 .style("fill","white")
@@ -197,7 +206,7 @@ function gethero(chararr) {
             .enter()
             .append("rect")
             .attr("x", 15)
-            .attr("y", function(d,i){return 240+i *30})
+            .attr("y", function(d,i){return 260+i *30})
             .attr("width", function(d,i){
                 return salescale(d.revenue)})
             .attr("height",8)

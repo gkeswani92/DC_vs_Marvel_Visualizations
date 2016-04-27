@@ -1,4 +1,9 @@
+.clearmap{
+    height:25px;
+    width:175px;
+    font-size:18px;
 
+}
   .d3-tip {
   line-height: 1;
   font-weight: bold;
