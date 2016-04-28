@@ -19,10 +19,11 @@ function drawWorldMap() {
         },
         bubblesConfig: {
             borderWidth: 0,
+            opacity: 0.5
         },
         fills: {
-            'DC': "#000063",
-            'Marvel': "#CE0000",
+            'DC': 'rgba(0,0,255,0.75)',
+            'Marvel': 'rgba(255,0,0,0.75)',
             defaultFill: 'rgba(0,0,0,0.4)'
         },
         data: {
