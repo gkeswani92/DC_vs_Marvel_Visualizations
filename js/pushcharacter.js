@@ -126,7 +126,7 @@ function gethero(chararr) {
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 170)
-                .text("Comics Appearances: " + appearance)
+                .text("Comics Appearances: " + appearance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
                 .style("fill", "#2c2b2b");
 
 
