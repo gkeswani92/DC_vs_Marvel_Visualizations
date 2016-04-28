@@ -251,8 +251,8 @@ function resetSelections(){
 }
 
 //Stores the last 2 movies that have been plotted on the world map
-var current_movie1 = "Iron Man 3";
-var current_movie2 = "The Dark Knight Rises";
+var current_movie1 = "The Dark Knight Rises";
+var current_movie2 = "Iron Man 3";
 
 //Event listener for the toggle button being switched between absolute and relative revenues
 document.addEventListener("DOMContentLoaded", function (event) {
