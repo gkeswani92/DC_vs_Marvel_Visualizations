@@ -393,7 +393,7 @@ var updatez = function() {
 
 // Setup settings for graphic
 var canvas_width = 1500;
-var canvas_height = 600;
+var canvas_height = 700;
 var xpadding = 250; // for chart edge
 var ypadding = 80;
 
@@ -595,10 +595,11 @@ var promptclick = function(){
         d3.select("#Splot")
         .append("text")
         .attr("id","clickprompt")
-        .text("--Click a Circle to see International Revenue Map--")
-        .attr("transform", "translate(401, 65)")
+        .text("--Click a Circle to see Worldwide Revenue Map and Character information--")
+        .attr("transform", "translate(301, 65)")
         .attr("fill", "gray")
-        .style("font-family", "sans-serif");
+        .style("font-family", "sans-serif")
+        .style("font-size", 18);
 }
 }
 
