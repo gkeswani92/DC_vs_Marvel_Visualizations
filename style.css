@@ -1,4 +1,8 @@
+@font-face{
+  font-family: smack;
+  src:url('smack.ttf');
 
+}
   
 @font-face{
   font-family: maiden;
@@ -78,8 +82,8 @@
 
 #ScaleSelection {
     position: absolute;
-    top: 460px;
-    left:  800px;
+    top: 530px;
+    left:  1043px;
     width: 163px;
     height: 210px;
     border: .5px solid #777777;
@@ -87,14 +91,14 @@
 
 #dcchar{
   font-size: 50px;
-  font-family:foo;
+  font-family:Quarmic sans;
   color: #000063;
   opacity:.8;
 }
 
 #marvelchar{
   font-size: 50px;
-  font-family:foo;
+  font-family:Quarmic sans;
   color: #CE0000;
   opacity: .8;
 }
@@ -107,7 +111,7 @@ body {
 }
 
 h1{
-  font-family: Quarmic sans;
+  font-family: smack;
   font-size: 33px;
   color:#000063;
   text-shadow: 1.5px 1.5px #ff0000;
@@ -117,23 +121,41 @@ h1{
 div#vis2{
   height:1200px;
   position: absolute;
-  top: 1050px;
+  top: 1150px;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: #9CAAC6;
 
 }
+h2#intro{
+  text-align: center;
+  margin-right: 192px;
+  margin-left: 0px;
+  font-family: arial;
+  font-size: 20px;
+  color:#111111;
+  background-color:;
+  text-shadow: 0px 0px #ff0000;
+  opacity:.8;
+}
 
 div#vis3{
   position: absolute;
-  top: 2300px;
+  top: 2340px;
   left: 0;
   right: 0;
   bottom: 0;
 
 }
 
+#clickprompt{
+   position: absolute;
+  top: 0px;
+  left: 200px;
+  right: 50px;
+  bottom: 200px;
+}
 div.top{
   background-color: #9CAAC6;
   font-size: 130px;
