@@ -711,6 +711,7 @@ d3.select("#Splot").selectAll("#point")
         } else {
             console.log("Populating world map with comparison data");
         }
+        $.scrollTo("#worldtitle", 1000);
     });
 
 // Add X axis
