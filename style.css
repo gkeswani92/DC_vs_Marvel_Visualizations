@@ -7,6 +7,12 @@
 }
 
 @font-face{
+  font-family: foo;
+  src:url('foo.ttf');
+
+}
+
+@font-face{
   font-family: Action Comics Black;
   src:url('C2.ttf');
 
@@ -79,6 +85,19 @@
     border: .5px solid #777777;
 }
 
+#dcchar{
+  font-size: 50px;
+  font-family:foo;
+  color: #000063;
+  opacity:.8;
+}
+
+#marvelchar{
+  font-size: 50px;
+  font-family:foo;
+  color: #CE0000;
+  opacity: .8;
+}
 
 body {
     text-align: center;
