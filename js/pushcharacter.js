@@ -1,5 +1,8 @@
 function gethero(chararr) {
+    //remove old characters
     d3.selectAll(".character").remove();
+
+    //have dc/marvel title
     var dc=document.getElementById('dcchar');
     var marvel=document.getElementById('marvelchar');
     if (chararr[0].length!=0 && chararr[1].length!=0){
@@ -31,30 +34,24 @@ function gethero(chararr) {
     .attr("class","d3-tip")
     .offset([-10,0])
     .html(function(d){
-          //console.log(d);
+         
          return "Most Revenue: $ 1,575,847,963";})
 
     var tipcomicmax=d3.tip()
     .attr("class","d3-tip")
     .offset([-10,0])
     .html(function(d){
-          //console.log(d);
+         
          return "Most Comics Appearances: 4,043";})
 
     var tipmomax=d3.tip()
     .attr("class","d3-tip")
     .offset([-10,0])
     .html(function(d){
-          //console.log(d);
+          
          return "Most Movies Appearances: 8";})
 
-    var tipmo=d3.tip()
-    .attr("class","d3-tip")
-    .offset([-10,0])
-    .html(function(d){
-          //console.log(d);
-         return ;})
-
+    //start getting character information for two arrays
     for (m = 0; m < chararr.length; m++) {
         cha = chararr[m];
         color=["#000063","#CE0000"]
@@ -67,9 +64,7 @@ function gethero(chararr) {
 
             //get character all movies 
             for (var j in MovieJSON) {
-                // console.log(j);
-                // console.log(movie[j]);
-                // console.log(movie[j].Characters)
+                
 
                 if (MovieJSON[j].Characters.indexOf(name) != -1) {
                     film = MovieJSON[j].FILM
@@ -82,7 +77,7 @@ function gethero(chararr) {
                 }
 
             }
-            console.log(more)
+            
             var svg = d3.select("#photo" + m)
                 .append("svg")
                 .attr("class", "character")
@@ -94,7 +89,7 @@ function gethero(chararr) {
             svg.call(tipcomicmax);
             svg.call(tipmomax);
             
-
+            //get image
             area = svg.selectAll("image").data([0]);
 
             area.enter()
@@ -107,6 +102,7 @@ function gethero(chararr) {
                 .attr("xlink:href", image)
                 .attr("opacity", 0.7);
 
+            //get character name
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 150)
@@ -117,12 +113,14 @@ function gethero(chararr) {
                 .style("font-family", "Action Comics Black")
                 .style("opacity", ".7")
                 .style("stroke", "#DEE7EF");
-
+            
+            //set scale for bar chart
             lScale = d3.scale.linear().domain([0, 4050]).range([0, 300]);
             comicscale=d3.scale.linear().domain([0, 4043]).range([0, 300]);
             moviescale=d3.scale.linear().domain([0, 8]).range([0, 300]);
             salescale=d3.scale.linear().domain([0, 1575847963]).range([0, 300]);
 
+            //comic movie appearance
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 170)
@@ -158,6 +156,7 @@ function gethero(chararr) {
                 .on('mouseover', tipmomax.show)
                 .on('mouseout', tipmomax.hide);
 
+            //appearance bar chart
             svg.append("rect")
                 .attr("x", 15)
                 .attr("y", 175)
@@ -177,7 +176,7 @@ function gethero(chararr) {
 
         
             for (k = 0; k < more.length; k++) {
-
+                //get movie name
                 svg.append("text")
                     .attr("x", 15)
                     .attr("y", 235 + k * 30)
@@ -196,7 +195,7 @@ function gethero(chararr) {
                 .on('mouseout', tipmax.hide);
                 
             }
-
+            //movie revenue bar chart
             svg.selectAll(".character")
             .data(more)
             .enter()
@@ -216,4 +215,5 @@ function gethero(chararr) {
     }
 }
 
+//set default to batman and iron man
 gethero([["Batman"],["Iron Man"]]);
