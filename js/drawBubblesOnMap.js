@@ -21,8 +21,8 @@ function drawWorldMap() {
             borderWidth: 0,
         },
         fills: {
-            'DC': "#0020C2",
-            'Marvel': "#D60E0E",
+            'DC': "#000063",
+            'Marvel': "#CE0000",
             defaultFill: 'rgba(0,0,0,0.4)'
         },
         data: {
@@ -59,11 +59,11 @@ function drawBubbles(movie1, movie2) {
     if(movie1 == "" && movie2 == "") {
         heading.innerText = "Waiting for user to click on bubble's in scatterplot so to analyse revenue data";
     } else if(movie1 == "") {
-        heading.innerText = "Analysing revenue of Marvel's \"" + movie2 + "\". Click on a blue circle to compare it with a DC movie";
+        heading.innerText = "World-wide revenue of Marvel's \"" + movie2 + "\". Click on a blue circle to compare it with a DC movie";
     } else if(movie2 == "") {
-        heading.innerText = "Analysing revenue of DC's \"" + movie1 + "\". Click on a red circle to compare it with a Marvel movie";
+        heading.innerText = "World-wide revenue of DC's \"" + movie1 + "\". Click on a red circle to compare it with a Marvel movie";
     } else {
-        heading.innerText = "Comparing revenue of Marvel's \"" + movie2 + "\" and DC's \"" +movie1 + "\"";
+        heading.innerText = "World-wide revenue of Marvel's \"" + movie2 + "\" and DC's \"" +movie1 + "\"";
     }
 }
 
@@ -127,7 +127,7 @@ function drawAbsoluteRevenueComparisonBubbles(movie1, movie2){
                 '<br/>Movie: ' + data.film + '',
                 '<br/>Country: ' + data.country + '',
                 '<br/>Franchise: ' + data.company + '',
-                '<br/>Revenue: ' + '$' + data.revenue + '',
+                '<br/>Revenue: ' + '$ ' + data.revenue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+'',
                 '<br/>% Revenue: ' + Math.round(100 * data.revenue * 100 / total_revenue)/100 + '%',
                 '</div>'
             ].join('');

@@ -57,7 +57,7 @@ function gethero(chararr) {
 
     for (m = 0; m < chararr.length; m++) {
         cha = chararr[m];
-        color=["blue","red"]
+        color=["#000063","#CE0000"]
 
         for (var i = 0; i < cha.length; i++) {
             name = cha[i];
@@ -105,17 +105,18 @@ function gethero(chararr) {
                 .attr("width", 150)
                 .attr("height", 150)
                 .attr("xlink:href", image)
-                .attr("opacity", 0.9);
+                .attr("opacity", 0.7);
 
             svg.append("text")
                 .attr("x", 15)
                 .attr("y", 150)
-                .text("Name: " + name)
                 .style("fill", "#2c2b2b")
-                .text(name)
+                .text(name.toUpperCase())
                 .style("fill", color[m])
-                .style("font-size", "20px")
-                .style("font-family", "sans-serif");
+                .style("font-size", "18px")
+                .style("font-family", "Action Comics Black")
+                .style("opacity", ".7")
+                .style("stroke", "#DEE7EF");
 
             lScale = d3.scale.linear().domain([0, 4050]).range([0, 300]);
             comicscale=d3.scale.linear().domain([0, 4043]).range([0, 300]);

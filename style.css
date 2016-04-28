@@ -1,4 +1,27 @@
 
+  
+@font-face{
+  font-family: maiden;
+  src:url('maiden.ttf');
+
+}
+
+@font-face{
+  font-family: Action Comics Black;
+  src:url('C2.ttf');
+
+}
+@font-face{
+  font-family: DC Comics;
+  src:url('DC Comics.ttf');
+}
+
+@font-face{
+  font-family: Quarmic sans;
+  src:url('Quarmic.ttf');
+}
+
+
   .d3-tip {
   line-height: 1;
   font-weight: bold;
@@ -23,6 +46,8 @@
   text-align: center;
 }
 
+
+
 /* Style northward tooltips differently */
 .d3-tip.n:after {
   margin: -1px 0 0 0;
@@ -36,6 +61,7 @@
     fill: none;
     stroke: #2c2b2b;
     shape-rendering: crispEdges;
+    stroke-width: 2px;
 }
 
 .axis text {
@@ -45,35 +71,55 @@
 }
 
 #ScaleSelection {
-    position: relative;
-    top: 320px;
-    left:  80%;
+    position: absolute;
+    top: 460px;
+    left:  800px;
     width: 163px;
     height: 210px;
     border: .5px solid #777777;
 }
 
-.header img {
-  width: 80%;
-  height: 200px;
-}
-
-.header h1 {
-  position: relative;
-  top: 18px;
-  font-family: sans-serif;
-  text-align: center;
-  color: #2c2b2b;
-}
-
-
 
 body {
     text-align: center;
-    background-color: #c7c8ca;
+    background-color: #DEE7EF;
     color: #2c2b2b;
+    font-family: sans-serif;
 }
 
+h1{
+  font-family: Quarmic sans;
+  font-size: 33px;
+  color:#000063;
+  text-shadow: 1.5px 1.5px #ff0000;
+  opacity:.7;
+}
+
+div#vis2{
+  height:1200px;
+  position: absolute;
+  top: 1050px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #9CAAC6;
+
+}
+
+div#vis3{
+  position: absolute;
+  top: 2300px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+}
+
+div.top{
+  background-color: #9CAAC6;
+  font-size: 130px;
+  font-family: maiden ;
+}
 
 /* The switch - the box around the slider */
 .switch {

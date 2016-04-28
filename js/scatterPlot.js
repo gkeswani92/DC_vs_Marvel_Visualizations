@@ -1,3 +1,6 @@
+
+
+
 //Initial x,y categories
 var xselection = document.getElementById("xdropdown").value;
 var yselection = ydropdown.value;
@@ -229,8 +232,13 @@ var drawlegend = function() {
 
     setLegendValues();
 
-    d3.select("svg").selectAll("#LegCircle").data(ThreeValues).enter().append("circle").attr("id", "LegCircle").attr("cx", canvas_width - 1.8 * xpadding).attr("cy", function(d, i) {
-        var yloc = .497 * canvas_height;
+    d3.select("#Splot").selectAll("#LegCircle").data(ThreeValues)
+    .enter()
+    .append("circle")
+    .attr("id", "LegCircle")
+    .attr("cx", canvas_width - 1.8 * xpadding)
+    .attr("cy", function(d, i) {
+        var yloc = .59 * canvas_height;
         return yloc + i * 40;
 
     }).attr("r", function(d) {
@@ -250,7 +258,7 @@ var drawlegend = function() {
 
 
 
-    var legLabelLoc = .507 * canvas_height
+    var legLabelLoc = .602 * canvas_height
 
     //Remove previous legend labels if they exist
     d3.selectAll("#LegLabel").remove();
@@ -258,8 +266,8 @@ var drawlegend = function() {
     //Create new labels
     for (var j = 0; j < 3; j++) {
 
-        d3.select("svg").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
-            .style("fill","#2c2b2b").attr("transform", "translate(" + (canvas_width - 1.6 * xpadding) + "," + legLabelLoc + ")") // centre below axis
+        d3.select("#Splot").append("text").attr("id", "LegLabel").attr("text-anchor", "left")
+            .style("fill","#2c2b2b").attr("transform", "translate(" + (canvas_width - 1.65 * xpadding) + "," + legLabelLoc + ")") // centre below axis
             .text(function() {
 
                 if ((zselection == "ADJUSTED") | (zselection == "ADJBUDGET")) {
@@ -273,9 +281,9 @@ var drawlegend = function() {
     }
 
     d3.select("#LegTitle").remove();
-    d3.select("svg").append("text").style("fill","#2c2b2b").attr("id", "LegTitle").attr("text-anchor", "left")
-        .attr("transform", "translate(" + (canvas_width - 1.8 * xpadding) + "," + .47 * canvas_height + ")")
-        .text(hoverz).attr("font-size", 32)
+    d3.select("#Splot").append("text").style("fill","#2c2b2b").attr("id", "LegTitle").attr("text-anchor", "left")
+        .attr("transform", "translate(" + (canvas_width - 1.8 * xpadding) + "," + .54 * canvas_height + ")")
+        .text(hoverz).attr("font-size", 20)
 
 }
 
@@ -377,8 +385,8 @@ var updatez = function() {
 
 
 // Setup settings for graphic
-var canvas_width = 1300;
-var canvas_height = 800;
+var canvas_width = 1100;
+var canvas_height = 500;
 var xpadding = 160; // for chart edge
 var ypadding = 80;
 
@@ -421,14 +429,16 @@ var yAxis = d3.svg.axis()
 // Create SVG element For Plot
 var svg = d3.select("#Scatter") // This is where we put our vis
     .append("svg")
+    .attr("id", "Splot")
     .attr("width", canvas_width)
     .attr("height", canvas_height)
+    .style("display", "block");
 
 
 //Add Axis Labels
 var xlabupdate = function() {
     d3.select("#xlab").remove();
-    svg.append("text").style("fill","#2c2b2b").attr("id", "xlab").attr("font-size", 32).transition().delay(800).duration(500).ease("cubic")
+    svg.append("text").style("fill","#2c2b2b").attr("id", "xlab").attr("font-size", 20).transition().delay(800).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", "translate(" + (3 * canvas_width / 7) + "," + (canvas_height - (.3* ypadding)) + ")") // centre below axis
         .text(function() {
@@ -449,7 +459,7 @@ var xlabupdate = function() {
 
 var ylabupdate = function() {
     d3.select("#ylab").remove();
-    svg.append("text").style("fill","#2c2b2b").attr("font-size",32).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
+    svg.append("text").style("fill","#2c2b2b").attr("font-size",20).attr("id", "ylab").transition().delay(1000).duration(500).ease("cubic")
         .attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
         .attr("transform", function(d) {
             if (yselection == "Rotten_Tomatoes") {
@@ -518,7 +528,7 @@ var titleupdate = function() {
         .style("fill", "#2c2b2b")
         .attr("transform", "translate(" + canvas_width / 2.4 + "," + ypadding / 2 + ")")
         .text(maketitle())
-        .attr("font-size", "45")
+        .attr("font-size", "25")
 }
 
 
@@ -645,7 +655,7 @@ var char = {
 };
 
 // Create Circles
-d3.select("svg").selectAll("#point")
+d3.select("#Splot").selectAll("#point")
     .data(MoviePoints)
     .enter()
     .append("circle") // Add circle svg
