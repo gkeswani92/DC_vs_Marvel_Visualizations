@@ -129,7 +129,7 @@ var getunique = function(){
     var zunique = "z";
     if(xselection =="RELEASE"){xunique = "";}
     if(yselection == xselection){yunique ="";}
-    if((zselection == xselection) | (zselection == yselection)){zunique = "";}
+    if((zselection == xselection) | (zselection == yselection)|(zselection=="NONE")){zunique = "";}
 
     unique = xunique+yunique+zunique;
 
